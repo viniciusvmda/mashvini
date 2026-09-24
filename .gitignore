@@ -1,0 +1,21 @@
+# Frontend
+node_modules
+dist
+dist-ssr
+*.log
+npm-debug.log*
+*.local
+
+# Backend
+.venv/
+__pycache__/
+*.pyc
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.env
+
+# Editor directories and files
+!.vscode/*
+!.vscode/extensions.json
+.DS_Store
