@@ -127,3 +127,8 @@ Mock database and test REST client
 - 3 items in the database, page 1 and size 2 only return last item
 - 3 items in the database, page 2 and size 2 return data empty
 - Item with stock 0 is still returned by the endpoint with `stock: 0` (hiding the price is a frontend concern)
+
+## Changes from the original design
+
+- `shadcn/ui` is copied into a folder in the frontend. I decided to copy it to `src/ui` instead of the original path `src/components/ui`. I also had to exempt the naming convention for this folder that user kebab-case names.
+- `shadcn/ui` toasts are triggered by functions, so I discared the original plan that would build status toast components (success, error, warning) and implement global status logic. The function brings this out of the box.
