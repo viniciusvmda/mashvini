@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Backend: uvicorn",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "checkout.main:app",
+        "--reload"
+      ],
+      "cwd": "${workspaceFolder}/packages/backend",
+      "envFile": "${workspaceFolder}/packages/backend/.env"
+    },
+    {
+      "name": "Frontend: Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/packages/frontend/src"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full stack",
+      "configurations": [
+        "Backend: uvicorn",
+        "Frontend: Chrome"
+      ]
+    }
+  ]
+}

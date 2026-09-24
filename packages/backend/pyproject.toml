@@ -1,0 +1,71 @@
+[project]
+name = "checkout"
+version = "0.1.0"
+description = "Checkout backend API"
+readme = "README.md"
+authors = [
+    { name = "Vinícius Assunção" }
+]
+requires-python = ">=3.14.7"
+dependencies = [
+    "fastapi==0.119.0",
+    "uvicorn[standard]==0.38.0",
+    "pydantic==2.12.3",
+    "pydantic-settings==2.11.0",
+    "sqlalchemy==2.0.44",
+    "alembic==1.17.1",
+    "psycopg[binary]==3.2.10",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ruff==0.14.5",
+    "mypy==1.18.2",
+    "pytest==8.4.2",
+    "httpx==0.28.1",
+]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    "E",    # style issues (line length, whitespace, ...)
+    "F",    # unused imports/variables, undefined names, and other logic errors
+    "I",    # import sorting
+    "N",    # naming conventions (e.g. classes in PascalCase, functions in snake_case)
+    "UP",   # outdated syntax that a newer Python version replaces
+    "B",    # likely bugs and footguns (e.g. mutable default arguments)
+    "A",    # names that shadow Python builtins (e.g. a variable named `list`)
+    "C4",   # unnecessary/inefficient comprehensions
+    "S",    # common security issues (e.g. hardcoded passwords, unsafe eval)
+    "SIM",  # code that can be simplified
+    "RUF",  # Ruff's own extra checks, not tied to another category
+    "PL",   # broader code-quality checks (complexity, design smells, ...)
+    "COM",  # trailing comma style
+]
+ignore = [
+    "COM812", # trailing comma, conflicts with the formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "S101",    # assert is the whole point of pytest
+    "PLR2004", # literal expected values read fine without named constants
+]
+
+[tool.mypy]
+strict = true
+packages = ["checkout"]
+mypy_path = "src"
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"

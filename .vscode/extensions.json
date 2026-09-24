@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "charliermarsh.ruff",
+    "ms-python.python",
+    "biomejs.biome",
+    "bradlc.vscode-tailwindcss",
+    "ms-python.mypy-type-checker"
+  ]
+}

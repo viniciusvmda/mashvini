@@ -137,7 +137,7 @@ Set up backend using python.
 
 - VS Code workspace config:
     - enable format on save and auto save on focus change
-    - Set identation with 4 spaces for both Python, Typescript, YAML and markdown
+    - Set identation with 4 spaces Python, 2 spaces for the rest: Typescript, YAML, markdown, JSON. Keep tabs for makefiles
 - VS Code debug launch config for frontend and backend
 - Docker compose file with database, backend, frontend and migrations/seed run
     - Use profiles: default profile runs only db (+ migrate/seed); `full` profile adds backend and frontend
@@ -152,7 +152,7 @@ Set up backend using python.
 - Set CLAUDE.md
     - Reference README.md for project overview, how to run/test, folder structure and technologies 
     - Don't add autoexplanatory comments, if a comment is necessary it means that the readability is bad and we need to work on it
-    - Set ident spacing as 4 for both Python, Typescript, YAML and markdown
+    - Set identation with 4 spaces Python, 2 spaces for the rest: Typescript, YAML, markdown, JSON. Keep tabs for makefiles
 
 ### Acceptance criteria
 
