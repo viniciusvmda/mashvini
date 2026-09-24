@@ -13,6 +13,7 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         with:
           version: "0.12.13"
+      - run: cp .env.example .env
       - run: uv sync --frozen
       - run: uv build
       - run: docker build .
