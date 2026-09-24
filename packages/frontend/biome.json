@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!dist"]
+    "includes": ["**", "!dist", "!src/ui"]
   },
   "formatter": {
     "enabled": true,
@@ -31,6 +31,11 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "double"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   }
 }

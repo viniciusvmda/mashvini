@@ -17,5 +17,7 @@ paths: ["packages/backend/**"]
 - No docstrings, unless the logic is complex enough that it can't be simplified by extracting
   it into smaller, well-named functions or separate files.
 - 4-space indentation for Python code.
+- Out schemas that load ORM entities set `model_config = ConfigDict(from_attributes=True)` and
+  are built with `model_validate`.
 
 See `packages/backend/README.md` for folder structure, technologies, and commands.

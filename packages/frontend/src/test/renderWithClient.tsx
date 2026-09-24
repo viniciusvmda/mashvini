@@ -1,0 +1,33 @@
+import type { QueryFunction } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { render } from "@testing-library/react";
+import type { ReactNode } from "react";
+import { MemoryRouter } from "react-router";
+import { Toaster } from "@/ui/sonner";
+
+type RenderWithClientOptions = {
+  queryFn: QueryFunction;
+  initialEntries?: string[];
+};
+
+function renderWithClient(ui: ReactNode, opts: RenderWithClientOptions) {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        queryFn: opts.queryFn,
+      },
+    },
+  });
+
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter initialEntries={opts.initialEntries}>
+        {ui}
+        <Toaster />
+      </MemoryRouter>
+    </QueryClientProvider>,
+  );
+}
+
+export { renderWithClient };

@@ -15,7 +15,7 @@ runs migrations, and starts both the backend and the frontend.
 
 Once it's up:
 
-- Frontend: http://localhost:5173/health
+- Frontend: http://localhost:5173/
 - Backend: http://localhost:8000/health
 
 Tear it down with:

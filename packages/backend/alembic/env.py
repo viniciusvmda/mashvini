@@ -3,7 +3,9 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
+from checkout.catalog import model as catalog_model  # noqa: F401
 from checkout.config.env import get_settings
+from checkout.database.base import Base
 
 config = context.config
 
@@ -12,7 +14,7 @@ if config.config_file_name is not None:
 
 config.set_main_option("sqlalchemy.url", get_settings().database_url)
 
-target_metadata = None
+target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:

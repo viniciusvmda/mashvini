@@ -28,7 +28,7 @@ Here is a wireframe for the catalog:
 
 ![Catalog wireframe](02-catalog-wireframe.png)
 
-- Draft for the worktree
+- Final structure
 - src/
   - catalog/
     - catalog-item/
@@ -36,17 +36,25 @@ Here is a wireframe for the catalog:
       - CatalogCard.test.tsx
       - StockBadge.tsx
       - StockBadge.test.tsx
-    - catalog.tsx
-    - catalog.test.tsx
-    - catalog-skeleton.tsx
-    - catalog-skeleton.test.tsx
-  - status/
-    - SuccessToast.tsx
-    - SuccessToast.test.tsx
-    - ErrorToast.tsx
-    - ErrorToast.test.tsx
-    - WarningToast.tsx
-    - WarningToast.test.tsx
+    - catalogItem.ts
+    - Catalog.tsx
+    - Catalog.test.tsx
+    - CatalogSkeleton.tsx
+    - CatalogSkeleton.test.tsx
+    - useCatalogItems.ts
+    - useInView.ts
+  - config/
+    - queryClient.ts
+    - queryClient.test.ts
+  - test/
+    - renderWithClient.tsx
+    - setup.ts
+  - ui/
+    - badge.tsx
+    - card.tsx
+    - skeleton.tsx
+    - sonner.tsx
+    - utils.ts
 
 
 ### Test cases

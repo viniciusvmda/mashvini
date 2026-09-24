@@ -20,5 +20,17 @@ paths: ["packages/frontend/**"]
 - No self-explanatory comments. If a comment feels necessary, improve naming or structure
   instead.
 - 2-space indentation for TypeScript code.
+- Status feedback uses Sonner toasts: call `toast.success`, `toast.warning`, or `toast.error`
+  from `sonner`. `<Toaster />` is mounted once in `App.tsx`, so don't add per-feature toast
+  components.
+- `src/ui/` holds vendored shadcn/ui primitives (added with `npx shadcn@latest add`). They keep
+  shadcn's kebab-case filenames and are exempt from the feature-folder, naming, and
+  export-placement rules. Don't edit them beyond what integration needs.
+- shadcn/ui primitives default to compact text sizes (e.g. `Card` sets `text-xs`, `Badge` sets
+  `text-[0.625rem]`) meant for dense, desktop dashboard UI. Since the main target device is a
+  tablet read at arm's length (see `docs/decisions/01-frontend.md`), feature code must not
+  inherit those sizes for primary content: set an explicit size (`text-base` or larger for
+  body text, `text-lg`+ for emphasized values like prices) on the element that renders it,
+  rather than relying on the primitive's default.
 
 See `packages/frontend/README.md` for folder structure, technologies, and commands.
