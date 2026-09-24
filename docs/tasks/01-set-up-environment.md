@@ -16,6 +16,7 @@ Set up backend using python.
             - strict for checkout package
         - pytest
             - Set up paths for tests and implementation
+    - FastAPI
     - pydantic
     - SQLAlchemy (v2)
     - alembic
@@ -30,6 +31,7 @@ Set up backend using python.
     - Local user instead of root
     - Ignore .env and cache/build files
 - Claude setup:
+    - Add link to Frontend `README.md`
     - Add PostToolUse hooks for auto lint, format and test
     - Rules for backend folder:
         - screaming architecture
@@ -39,6 +41,8 @@ Set up backend using python.
             - kebab-case for folders
         - Generate alembic versions with meaningful name (e.g., add_catalog instead of random number)
 - Health endpoint returning 200 (no DB check for now)
+- README.md
+    - Set folder structure, main technologies and commands to run, build, lint and test
 
 ### Acceptance criteria
 
@@ -52,10 +56,10 @@ Set up backend using python.
     - alembic/
     - src/
         - checkout/
-        - health/
-            - router.py
-        - config/
-            - env.py
+            - health/
+                - router.py
+            - config/
+                - env.py
     - .env # git ignored
     - .env.example
 
@@ -77,6 +81,7 @@ Set up backend using python.
 - Environment variables
     - Load API base URL from `.env` file (e.g. `VITE_API_URL`)
 - Claude setup:
+    - Add link to Frontend `README.md`
     - Add PostToolUse hooks for auto lint, format and test
     - Rules for frontend folder:
         - screaming architecture
@@ -97,6 +102,8 @@ Set up backend using python.
     - Separate build stage
 - Health page hitting the health endpoint and printing Healthy or Unhealthy depending on the response
     - Add test cases for health and unhealthy
+- README.md
+    - Set folder structure, main technologies and commands to run, build, lint and test
 
 ### Acceptance criteria
 
@@ -128,14 +135,24 @@ Set up backend using python.
 
 ## Environment
 
-- VS Code workspace config with format on save and auto save on focus change
+- VS Code workspace config:
+    - enable format on save and auto save on focus change
+    - Set identation with 4 spaces for both Python, Typescript, YAML and markdown
 - VS Code debug launch config for frontend and backend
 - Docker compose file with database, backend, frontend and migrations/seed run
     - Use profiles: default profile runs only db (+ migrate/seed); `full` profile adds backend and frontend
     - Bind mount backend `src/` and frontend `src/` into the `full` profile containers so they hot reload; no rebuild needed for code changes
 - Local dev: run db via compose, backend via `uv run uvicorn ... --reload`, frontend via `npm run dev`
 - Makefile at repo root with targets: `dev-db`, `dev-backend`, `dev-frontend`, `up` (full compose), `test` and `lint`
-- Set CLAUDE.md with the Makefile's `dev-db`, `dev-backend`, `dev-frontend`, `test` and `lint` targets
+- README.md 
+    - add a section about how to run focused in the full docker compose profile (for reviews specially)
+    - Add then a section with the makefiles for development
+    - Add a section with the full stack
+    - Add a section with the high-level folder structure (details are available in each folder backend/frontend readme)
+- Set CLAUDE.md
+    - Reference README.md for project overview, how to run/test, folder structure and technologies 
+    - Don't add autoexplanatory comments, if a comment is necessary it means that the readability is bad and we need to work on it
+    - Set ident spacing as 4 for both Python, Typescript, YAML and markdown
 
 ### Acceptance criteria
 
