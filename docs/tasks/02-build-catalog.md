@@ -92,7 +92,6 @@ Here is a wireframe for the catalog:
   - On failure, return a standard error response (status code + `{"detail": str}` body) that the frontend's error toast can key off of
   - Add logging messages for getting items and found x items using logging library
   - Return the following
-
     ```json
     {
         page: int,
