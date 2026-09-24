@@ -1,0 +1,6 @@
+# 05 - Catalog
+
+- `items` table over one more table for `catalog` since there is no requirement for multiple catalogs in the roadmap.
+- GitHub repo over bundling images into the frontend or serving them from a backend static-files endpoint, since we're simulating an object storage (e.g. Amazon S3) isolated from the rest of the application, without increasing the frontend bundle size or the API payload.
+- Offset/limit pagination (`page`/`size`) over cursor-based pagination for the items request, since the catalog is small and mostly static, so we don't need cursor stability under heavy concurrent writes. Also offset/limit is also simpler to implement and to consume from the client.
+- No image resizing/compression pipeline, trading off bandwidth/load time on tablets for simplicity, since generating multiple sizes and serving them conditionally is out of scope for this take-home. In a real-world scenario, we would trigger thumbnail generation on upload and put a CDN in front of the images for caching and resizing, for example.
