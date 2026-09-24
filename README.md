@@ -21,7 +21,7 @@ Once it's up:
 Tear it down with:
 
 ```console
-docker compose down -v
+make down
 ```
 
 ## Development
@@ -36,6 +36,7 @@ frontend needs the backend):
 - `make test`: runs the backend and frontend test suites.
 - `make lint`: runs the backend and frontend lint/format/type checks.
 - `make up`: starts the full stack (database, migrations, backend, frontend) with Docker Compose.
+- `make down`: stops the full stack and removes its volumes.
 
 ## Stack
 
