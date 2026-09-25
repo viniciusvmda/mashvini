@@ -12,7 +12,9 @@ Checkout API built with Python and FastAPI.
 |       |-- catalog/      # catalog items endpoint
 |       |-- config/       # settings loaded from environment variables
 |       |-- database/     # SQLAlchemy engine/session setup
-|       `-- health/       # health check endpoint
+|       |-- health/       # health check endpoint
+|       |-- order/        # order creation, cancellation, and expiry
+|       `-- payment/      # payment endpoint and mock gateway
 |-- tests/                # mirrors src/checkout, runs against the installed package
 |-- .env.example
 |-- alembic.ini

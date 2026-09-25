@@ -1,4 +1,5 @@
 from collections import Counter
+from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
 from fastapi import Depends
@@ -8,9 +9,16 @@ from sqlalchemy.orm import Session
 from checkout.catalog.exceptions import ItemNotFoundError
 from checkout.catalog.model import Item
 from checkout.database.session import get_session
-from checkout.order.exceptions import ItemNotAvailableError
+from checkout.order.exceptions import (
+    ItemNotAvailableError,
+    OrderNotFoundError,
+    OrderNotPayableError,
+)
 from checkout.order.model import Order, OrderLine
-from checkout.order.schemas import OrderLineIn
+from checkout.order.schemas import OrderLineIn, OrderStatus
+from checkout.order.stock import release_stock
+
+ORDER_TTL = timedelta(minutes=5)
 
 
 class OrderRepository:
@@ -36,6 +44,8 @@ class OrderRepository:
                 items[item_id].stock -= quantity
 
             order = Order(
+                expires_at=datetime.now(UTC) + ORDER_TTL,
+                status=OrderStatus.PENDING.value,
                 lines=[
                     OrderLine(
                         item_id=line.item_id,
@@ -43,10 +53,31 @@ class OrderRepository:
                         price=items[line.item_id].price,
                     )
                     for line in lines
-                ]
+                ],
             )
             self._session.add(order)
             self._session.flush()
+
+        return order
+
+    def lock(self, order_id: int) -> Order:
+        statement = select(Order).where(Order.id == order_id).with_for_update()
+        order = self._session.execute(statement).scalar_one_or_none()
+        if order is None:
+            raise OrderNotFoundError(order_id)
+        return order
+
+    def cancel(self, order_id: int) -> Order:
+        with self._session.begin():
+            order = self.lock(order_id)
+
+            if order.status in (OrderStatus.CANCELLED, OrderStatus.EXPIRED):
+                return order
+            if order.status == OrderStatus.PAID:
+                raise OrderNotPayableError(order_id, order.status)
+
+            order.status = OrderStatus.CANCELLED.value
+            release_stock(self._session, order)
 
         return order
 

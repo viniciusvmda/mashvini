@@ -43,6 +43,7 @@ services:
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-mashvini}
       DATABASE_NAME: ${POSTGRES_DB:-mashvini}
       CORS_ALLOWED_ORIGINS: '["http://localhost:5173"]'
+      PAYMENT_SIMULATOR_ENABLED: "true"
     volumes:
       - ./packages/backend/src:/app/src
     ports:
@@ -58,8 +59,10 @@ services:
       target: dev
       args:
         VITE_API_URL: http://localhost:8000
+        VITE_PAYMENT_SIMULATOR: "true"
     environment:
       VITE_API_URL: http://localhost:8000
+      VITE_PAYMENT_SIMULATOR: "true"
       CHOKIDAR_USEPOLLING: "true"
     volumes:
       - ./packages/frontend/src:/app/src

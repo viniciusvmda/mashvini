@@ -86,6 +86,26 @@ describe("OrderScreen", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("keeps the footer's Finalize/Cancel actions above the cart panel when it is open", async () => {
+    const user = userEvent.setup();
+    const queryFn = vi.fn(() => Promise.resolve(buildPage()));
+    renderWithClient(<OrderScreen />, { queryFn });
+    await screen.findByText("Voss water");
+
+    await user.click(screen.getAllByText("Add")[0]);
+    await user.click(screen.getByRole("button", { name: /Cart/ }));
+
+    const footer = screen
+      .getByRole("button", { name: "Finalize order" })
+      .closest("footer") as HTMLElement;
+    const extractZIndex = (element: HTMLElement) =>
+      Number(element.className.match(/\bz-\[?(\d+)\]?\b/)?.[1]);
+
+    expect(extractZIndex(footer)).toBeGreaterThan(
+      extractZIndex(screen.getByLabelText("Cart")),
+    );
+  });
+
   it("allows adding another item from the catalog while the cart panel is open", async () => {
     const user = userEvent.setup();
     const queryFn = vi.fn(() => Promise.resolve(buildPage()));

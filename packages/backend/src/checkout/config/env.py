@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     database_password: str
     database_name: str
     cors_allowed_origins: list[str]
+    payment_simulator_enabled: bool = False
 
     @property
     def database_url(self) -> str:

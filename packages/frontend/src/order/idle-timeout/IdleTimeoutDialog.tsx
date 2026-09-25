@@ -25,12 +25,25 @@ function IdleCountdownMessage({ onZero }: IdleCountdownMessageProps) {
   return <>Returning to the start page in {remaining} seconds</>;
 }
 
-function IdleTimeoutDialog() {
-  const { isIdle, reset } = useIdleTimeout(IDLE_TIMEOUT_MS);
+type IdleTimeoutDialogProps = {
+  onTimeout?: () => void;
+  enabled?: boolean;
+};
+
+function IdleTimeoutDialog({
+  onTimeout,
+  enabled = true,
+}: IdleTimeoutDialogProps = {}) {
+  const { isIdle, reset } = useIdleTimeout(IDLE_TIMEOUT_MS, enabled);
   const navigate = useNavigate();
   const { dispatch } = useCart();
 
   function handleTimeoutReached() {
+    if (onTimeout) {
+      onTimeout();
+      return;
+    }
+
     dispatch({ type: "clear" });
     navigate("/");
   }

@@ -7,6 +7,7 @@ from checkout.catalog import model as catalog_model  # noqa: F401
 from checkout.config.env import get_settings
 from checkout.database.base import Base
 from checkout.order import model as order_model  # noqa: F401
+from checkout.payment import model as payment_model  # noqa: F401
 
 config = context.config
 

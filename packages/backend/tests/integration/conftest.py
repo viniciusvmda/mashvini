@@ -13,6 +13,7 @@ from checkout.catalog.model import Item
 from checkout.config.env import get_settings
 from checkout.database.session import get_engine
 from checkout.main import create_app
+from checkout.payment.gateway import MockPaymentGateway, get_payment_gateway
 
 BACKEND_DIR = Path(__file__).resolve().parents[2]
 
@@ -51,7 +52,9 @@ def _test_database() -> Generator[None]:
 @pytest.fixture(autouse=True)
 def _reset_database() -> Generator[None]:
     with get_engine().connect() as connection:
-        connection.execute(text("TRUNCATE order_lines, orders, items RESTART IDENTITY CASCADE"))
+        connection.execute(
+            text("TRUNCATE payments, order_lines, orders, items RESTART IDENTITY CASCADE")
+        )
         connection.commit()
     yield
 
@@ -78,3 +81,12 @@ def db_session() -> Generator[Session]:
 @pytest.fixture
 def client() -> TestClient:
     return TestClient(create_app())
+
+
+@pytest.fixture
+def client_with_simulator() -> TestClient:
+    app = create_app()
+    app.dependency_overrides[get_payment_gateway] = lambda: MockPaymentGateway(
+        simulator_enabled=True
+    )
+    return TestClient(app)

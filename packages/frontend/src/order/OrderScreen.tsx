@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router";
 import { Catalog } from "@/catalog/Catalog";
 import { CartPanel } from "@/order/cart/CartPanel";
 import { IdleTimeoutDialog } from "@/order/idle-timeout/IdleTimeoutDialog";
@@ -6,7 +7,10 @@ import { Footer } from "@/order/layout/Footer";
 import { Header } from "@/order/layout/Header";
 
 function OrderScreen() {
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const location = useLocation();
+  const [isCartOpen, setIsCartOpen] = useState(
+    Boolean((location.state as { openCart?: boolean } | null)?.openCart),
+  );
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -18,7 +22,7 @@ function OrderScreen() {
         <Catalog />
       </div>
       <CartPanel open={isCartOpen} onOpenChange={setIsCartOpen} />
-      <Footer />
+      <Footer isCartOpen={isCartOpen} onOpenCart={() => setIsCartOpen(true)} />
       <IdleTimeoutDialog />
     </div>
   );

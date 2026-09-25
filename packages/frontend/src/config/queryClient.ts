@@ -1,6 +1,8 @@
 import type { QueryFunctionContext } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
+import { cancelOrder } from "../order/cancelOrder";
 import { createOrder } from "../order/createOrder";
+import { payOrder } from "../payment/payOrder";
 import { ApiError, extractErrorMessage } from "./apiError";
 import { env } from "./env";
 
@@ -61,7 +63,15 @@ function createQueryClient(): QueryClient {
     },
   });
 
-  queryClient.setMutationDefaults(["orders"], { mutationFn: createOrder });
+  queryClient.setMutationDefaults(["orders", "create"], {
+    mutationFn: createOrder,
+  });
+  queryClient.setMutationDefaults(["orders", "payment"], {
+    mutationFn: payOrder,
+  });
+  queryClient.setMutationDefaults(["orders", "cancel"], {
+    mutationFn: cancelOrder,
+  });
 
   return queryClient;
 }

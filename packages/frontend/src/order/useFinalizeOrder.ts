@@ -30,10 +30,9 @@ function useFinalizeOrder() {
   const navigate = useNavigate();
 
   const mutation = useMutation<Order, Error, OrderLineInput[]>({
-    mutationKey: ["orders"],
-    onSuccess: () => {
-      dispatch({ type: "clear" });
-      navigate("/success");
+    mutationKey: ["orders", "create"],
+    onSuccess: (order) => {
+      navigate("/payment", { state: { order } });
     },
     onError: async (error) => {
       if (error instanceof ApiError && error.status === 409) {

@@ -29,7 +29,7 @@ function CartPanel({ open, onOpenChange }: CartPanelProps) {
       <SheetContent
         aria-label="Cart"
         showOverlay={false}
-        className="w-full sm:max-w-sm"
+        className="z-30 w-full pb-24 sm:max-w-sm"
       >
         <SheetHeader>
           <SheetTitle className="text-lg">Cart</SheetTitle>

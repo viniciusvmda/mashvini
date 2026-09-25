@@ -16,6 +16,9 @@ type OrderLine = {
 type Order = {
   id: number;
   created_at: string;
+  status: string;
+  expires_at: string;
+  total: number;
   lines: OrderLine[];
 };
 

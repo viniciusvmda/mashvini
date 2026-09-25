@@ -7,7 +7,7 @@ const RESET_EVENTS = [
   "scroll",
 ] as const;
 
-function useIdleTimeout(timeoutMs: number) {
+function useIdleTimeout(timeoutMs: number, enabled: boolean = true) {
   const [isIdle, setIsIdle] = useState(false);
   const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
@@ -16,10 +16,18 @@ function useIdleTimeout(timeoutMs: number) {
   const reset = useCallback(() => {
     setIsIdle(false);
     clearTimeout(timeoutIdRef.current);
-    timeoutIdRef.current = setTimeout(() => setIsIdle(true), timeoutMs);
-  }, [timeoutMs]);
+    if (enabled) {
+      timeoutIdRef.current = setTimeout(() => setIsIdle(true), timeoutMs);
+    }
+  }, [timeoutMs, enabled]);
 
   useEffect(() => {
+    if (!enabled) {
+      setIsIdle(false);
+      clearTimeout(timeoutIdRef.current);
+      return;
+    }
+
     reset();
 
     for (const eventName of RESET_EVENTS) {
@@ -32,7 +40,7 @@ function useIdleTimeout(timeoutMs: number) {
       }
       clearTimeout(timeoutIdRef.current);
     };
-  }, [reset]);
+  }, [reset, enabled]);
 
   return { isIdle, reset };
 }
