@@ -127,6 +127,7 @@ against a disposable Postgres database (dedicated test database on the dev Postg
 
 ## Changes from the original design
 
-- Adjustments to improve readability in backend: Merge loop in `order/repository.py``
+- Adjustments to improve readability in backend: Merge loop in `order/repository.py`
 - Style adjustments: `Card height mismatch when out of stock`, Finalize/Cancel buttons too small for tablet
 - Cart behaviour: initially it was always opened. Now it works like a SideBar, that was my original idea and allow users to add new items with the cart opened.
+- Order `status` was deferred on purpose, per [order decision](../decisions/06-order.md). It was added in the [payment task](04-build-payment.md), so the "No `status` field yet" note above only holds for this task.

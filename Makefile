@@ -13,7 +13,7 @@ up:
 	docker compose --profile full up --build
 
 down:
-	docker compose --profile full down -v
+	docker compose --profile full down
 
 test:
 	cd packages/backend && uv run pytest

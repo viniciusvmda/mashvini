@@ -10,4 +10,4 @@
 
 ## Changes from the original design
 
-Added an alert in case of consecutive errors to contact support since the user nas no one to support them in-person.
+Added an alert in case of consecutive errors to contact support since the user has no one to support them in-person.
