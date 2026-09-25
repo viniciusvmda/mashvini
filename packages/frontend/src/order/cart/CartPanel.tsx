@@ -20,8 +20,17 @@ function CartPanel({ open, onOpenChange }: CartPanelProps) {
   const count = itemCount(state);
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent aria-label="Cart" className="w-full sm:max-w-sm">
+    <Sheet
+      open={open}
+      onOpenChange={onOpenChange}
+      modal={false}
+      disablePointerDismissal
+    >
+      <SheetContent
+        aria-label="Cart"
+        showOverlay={false}
+        className="w-full sm:max-w-sm"
+      >
         <SheetHeader>
           <SheetTitle className="text-lg">Cart</SheetTitle>
         </SheetHeader>

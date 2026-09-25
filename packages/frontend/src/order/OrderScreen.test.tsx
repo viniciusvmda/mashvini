@@ -9,7 +9,7 @@ function buildPage(): CatalogPage {
   return {
     page: 0,
     size: 12,
-    total: 1,
+    total: 2,
     data: [
       {
         id: 1,
@@ -17,6 +17,13 @@ function buildPage(): CatalogPage {
         price: 9,
         stock: 5,
         image_url: "https://example.com/voss.png",
+      },
+      {
+        id: 2,
+        name: "Sparkling water",
+        price: 5,
+        stock: 5,
+        image_url: "https://example.com/sparkling.png",
       },
     ],
   };
@@ -52,15 +59,15 @@ describe("OrderScreen", () => {
     expect(screen.getByLabelText("Cart")).toBeInTheDocument();
   });
 
-  it("shows the cart panel automatically once an item is added", async () => {
+  it("keeps the cart panel collapsed when an item is added", async () => {
     const user = userEvent.setup();
     const queryFn = vi.fn(() => Promise.resolve(buildPage()));
     renderWithClient(<OrderScreen />, { queryFn });
     await screen.findByText("Voss water");
 
-    await user.click(screen.getByText("Add"));
+    await user.click(screen.getAllByText("Add")[0]);
 
-    expect(screen.getByLabelText("Cart")).toBeInTheDocument();
+    expect(screen.queryByLabelText("Cart")).not.toBeInTheDocument();
   });
 
   it("hides the header's item count while the cart panel is open", async () => {
@@ -69,7 +76,7 @@ describe("OrderScreen", () => {
     renderWithClient(<OrderScreen />, { queryFn });
     await screen.findByText("Voss water");
 
-    await user.click(screen.getByText("Add"));
+    await user.click(screen.getByLabelText("Toggle cart"));
 
     const header = screen
       .getByText("MASHVINI")
@@ -77,5 +84,21 @@ describe("OrderScreen", () => {
     expect(
       within(header).queryByText(/items? · Total/),
     ).not.toBeInTheDocument();
+  });
+
+  it("allows adding another item from the catalog while the cart panel is open", async () => {
+    const user = userEvent.setup();
+    const queryFn = vi.fn(() => Promise.resolve(buildPage()));
+    renderWithClient(<OrderScreen />, { queryFn });
+    await screen.findByText("Voss water");
+    await screen.findByText("Sparkling water");
+
+    await user.click(screen.getByLabelText("Toggle cart"));
+    const cart = screen.getByLabelText("Cart");
+    await user.click(screen.getAllByText("Add")[0]);
+    await user.click(screen.getAllByText("Add")[0]);
+
+    expect(within(cart).getByText("Voss water")).toBeInTheDocument();
+    expect(within(cart).getByText("Sparkling water")).toBeInTheDocument();
   });
 });
