@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { payOrder } from "./payOrder";
+import { payOrder, SIMULATOR_PROCESSING_DELAY_MS } from "./payOrder";
 
 describe("payOrder", () => {
   beforeEach(() => {
@@ -93,7 +93,7 @@ describe("payOrder", () => {
       resolved = true;
     });
 
-    await vi.advanceTimersByTimeAsync(1499);
+    await vi.advanceTimersByTimeAsync(SIMULATOR_PROCESSING_DELAY_MS - 1);
     expect(resolved).toBe(false);
 
     await vi.advanceTimersByTimeAsync(1);

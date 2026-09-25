@@ -74,4 +74,4 @@ async function payOrder({
 }
 
 export type { Payment, PaymentMethod, PayOrderInput, SimulatedOutcome };
-export { payOrder };
+export { payOrder, SIMULATOR_PROCESSING_DELAY_MS };
