@@ -26,11 +26,13 @@ function CatalogCard({ item }: CatalogCardProps) {
         />
         <CardContent className="flex flex-col gap-2">
           <p className="text-base font-medium">{item.name}</p>
-          {isInStock ? (
-            <p className="text-lg font-semibold">{formatPrice(item.price)}</p>
-          ) : (
-            <StockBadge />
-          )}
+          <div className="flex h-7 items-center">
+            {isInStock ? (
+              <p className="text-lg font-semibold">{formatPrice(item.price)}</p>
+            ) : (
+              <StockBadge />
+            )}
+          </div>
           <div className="h-7">
             {isInStock &&
               (line ? (
