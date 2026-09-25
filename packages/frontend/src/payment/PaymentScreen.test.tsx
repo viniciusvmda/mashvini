@@ -1,4 +1,10 @@
-import { act, fireEvent, screen, within } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type ReactNode, useEffect } from "react";
 import { Route, Routes } from "react-router";
@@ -282,6 +288,148 @@ describe("PaymentScreen", () => {
     const firstKey = paymentFn.mock.calls[0][0].idempotencyKey;
     const secondKey = paymentFn.mock.calls[1][0].idempotencyKey;
     expect(secondKey).toBe(firstKey);
+  });
+
+  it("shows the support dialog after three consecutive declined payments", async () => {
+    vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
+    const paymentFn = vi
+      .fn()
+      .mockRejectedValue(new ApiError("Payment declined", 402));
+    renderPaymentScreen({ paymentFn });
+    const user = userEvent.setup();
+
+    for (let attempt = 0; attempt < 3; attempt++) {
+      await chooseCard(user);
+      await user.click(
+        screen.getByRole("button", { name: "Simulate a declined payment" }),
+      );
+    }
+
+    expect(await screen.findByText("Need help paying?")).toBeInTheDocument();
+    expect(screen.getByText(/9999-999-9999/)).toBeInTheDocument();
+  });
+
+  it("does not show the support dialog after only two consecutive failures", async () => {
+    vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
+    const paymentFn = vi
+      .fn()
+      .mockRejectedValue(new ApiError("Payment declined", 402));
+    renderPaymentScreen({ paymentFn });
+    const user = userEvent.setup();
+
+    for (let attempt = 0; attempt < 2; attempt++) {
+      await chooseCard(user);
+      await user.click(
+        screen.getByRole("button", { name: "Simulate a declined payment" }),
+      );
+    }
+
+    expect(screen.queryByText("Need help paying?")).not.toBeInTheDocument();
+  });
+
+  it("resets the failure count after a successful payment", async () => {
+    vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
+    const paymentFn = vi
+      .fn()
+      .mockRejectedValueOnce(new ApiError("Payment declined", 402))
+      .mockRejectedValueOnce(new ApiError("Payment declined", 402))
+      .mockResolvedValueOnce({});
+    renderPaymentScreen({ paymentFn });
+    const user = userEvent.setup();
+
+    await chooseCard(user);
+    await user.click(
+      screen.getByRole("button", { name: "Simulate a declined payment" }),
+    );
+    await chooseCard(user);
+    await user.click(
+      screen.getByRole("button", { name: "Simulate a declined payment" }),
+    );
+    await chooseCard(user);
+    await user.click(
+      screen.getByRole("button", { name: "Simulate an approved payment" }),
+    );
+
+    expect(await screen.findByText("Success screen")).toBeInTheDocument();
+  });
+
+  it("does not count an expired order toward the support dialog threshold", async () => {
+    vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
+    const paymentFn = vi
+      .fn()
+      .mockRejectedValueOnce(new ApiError("Payment declined", 402))
+      .mockRejectedValueOnce(new ApiError("Payment declined", 402))
+      .mockRejectedValueOnce(new ApiError("Your order expired", 409));
+    renderPaymentScreen({ paymentFn });
+    const user = userEvent.setup();
+
+    await chooseCard(user);
+    await user.click(
+      screen.getByRole("button", { name: "Simulate a declined payment" }),
+    );
+    await chooseCard(user);
+    await user.click(
+      screen.getByRole("button", { name: "Simulate a declined payment" }),
+    );
+    await chooseCard(user);
+    await user.click(
+      screen.getByRole("button", { name: "Simulate an approved payment" }),
+    );
+
+    expect(await screen.findByText("Catalog screen")).toBeInTheDocument();
+    expect(screen.queryByText("Need help paying?")).not.toBeInTheDocument();
+  });
+
+  it("shows the support dialog after three consecutive generic network failures", async () => {
+    vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
+    const paymentFn = vi
+      .fn()
+      .mockRejectedValue(new TypeError("Failed to fetch"));
+    renderPaymentScreen({ paymentFn });
+    const user = userEvent.setup();
+    await chooseCard(user);
+    await user.click(
+      screen.getByRole("button", { name: "Simulate an approved payment" }),
+    );
+
+    await waitFor(() => expect(paymentFn).toHaveBeenCalledTimes(1));
+
+    for (let call = 2; call <= 3; call++) {
+      const tryAgainButtons = await screen.findAllByText("Try again");
+      fireEvent.click(tryAgainButtons[0]);
+      await waitFor(() => expect(paymentFn).toHaveBeenCalledTimes(call));
+    }
+
+    expect(await screen.findByText("Need help paying?")).toBeInTheDocument();
+  });
+
+  it("closes the support dialog and allows further attempts", async () => {
+    vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
+    const paymentFn = vi
+      .fn()
+      .mockRejectedValueOnce(new ApiError("Payment declined", 402))
+      .mockRejectedValueOnce(new ApiError("Payment declined", 402))
+      .mockRejectedValueOnce(new ApiError("Payment declined", 402))
+      .mockResolvedValueOnce({});
+    renderPaymentScreen({ paymentFn });
+    const user = userEvent.setup();
+
+    for (let attempt = 0; attempt < 3; attempt++) {
+      await chooseCard(user);
+      await user.click(
+        screen.getByRole("button", { name: "Simulate a declined payment" }),
+      );
+    }
+
+    await user.click(await screen.findByRole("button", { name: "Close" }));
+    expect(screen.queryByText("Need help paying?")).not.toBeInTheDocument();
+
+    await chooseCard(user);
+    await user.click(
+      screen.getByRole("button", { name: "Simulate an approved payment" }),
+    );
+
+    expect(await screen.findByText("Success screen")).toBeInTheDocument();
   });
 
   it("cancels the pending order when Back to cart is clicked", async () => {
