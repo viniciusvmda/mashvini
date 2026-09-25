@@ -7,6 +7,6 @@ Holds the roadmap for the development of the application. The detailed features 
 2. Build catalog
 3. Build cart/order
 4. Build payment
-5. Fine tunning
-6. Build catatlog search (to be decided)
+5. Final adjustments in UI
+6. Consolidate root README
 7. Ship application
