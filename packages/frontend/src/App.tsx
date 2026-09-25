@@ -1,14 +1,17 @@
-import { Navigate, Route, Routes } from "react-router";
-import { Catalog } from "./catalog/Catalog";
+import { Route, Routes } from "react-router";
 import { HealthStatus } from "./health/HealthStatus";
+import { IdleScreen } from "./order/idle/IdleScreen";
+import { OrderScreen } from "./order/OrderScreen";
+import { SuccessScreen } from "./order/success/SuccessScreen";
 import { Toaster } from "./ui/sonner";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Navigate to="/catalog" replace />} />
-        <Route path="/catalog" element={<Catalog />} />
+        <Route path="/" element={<IdleScreen />} />
+        <Route path="/catalog" element={<OrderScreen />} />
+        <Route path="/success" element={<SuccessScreen />} />
         <Route path="/health" element={<HealthStatus />} />
       </Routes>
       <Toaster />

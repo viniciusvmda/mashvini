@@ -1,0 +1,48 @@
+import { useNavigate } from "react-router";
+import { useCart } from "@/order/cart/CartContext";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/ui/alert-dialog";
+import { Button } from "@/ui/button";
+
+function CancelOrderDialog() {
+  const { dispatch } = useCart();
+  const navigate = useNavigate();
+
+  function handleConfirm() {
+    dispatch({ type: "clear" });
+    navigate("/");
+  }
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger render={<Button type="button" variant="outline" />}>
+        Cancel order
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Cancel this order?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Your cart will be cleared and you will return to the start screen.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Keep shopping</AlertDialogCancel>
+          <AlertDialogAction type="button" onClick={handleConfirm}>
+            Cancel order
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+export { CancelOrderDialog };
