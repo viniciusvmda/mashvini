@@ -12,12 +12,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme="system"
       className="toaster group"
+      richColors
       icons={{
-        success: <CircleCheckIcon className="size-4" />,
-        info: <InfoIcon className="size-4" />,
-        warning: <TriangleAlertIcon className="size-4" />,
-        error: <OctagonXIcon className="size-4" />,
-        loading: <Loader2Icon className="size-4 animate-spin" />,
+        success: <CircleCheckIcon className="size-7" strokeWidth={2.5} />,
+        info: <InfoIcon className="size-7" strokeWidth={2.5} />,
+        warning: <TriangleAlertIcon className="size-7" strokeWidth={2.5} />,
+        error: <OctagonXIcon className="size-7" strokeWidth={2.5} />,
+        loading: <Loader2Icon className="size-7 animate-spin" />,
       }}
       style={
         {
@@ -25,11 +26,18 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
           "--border-radius": "var(--radius)",
+          "--width": "420px",
+          "--error-bg": "color-mix(in oklch, var(--destructive) 12%, var(--popover))",
+          "--error-border": "color-mix(in oklch, var(--destructive) 45%, transparent)",
+          "--error-text": "var(--destructive)",
         } as React.CSSProperties
       }
       toastOptions={{
         classNames: {
-          toast: "cn-toast",
+          toast: "cn-toast gap-4! p-5 text-base",
+          title: "text-base font-semibold",
+          description: "text-base",
+          actionButton: "h-10! px-4! text-base!",
         },
       }}
       {...props}

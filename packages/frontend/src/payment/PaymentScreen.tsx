@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "sonner";
+import { MashviniLogo } from "@/brand/MashviniLogo";
 import { ApiError } from "@/config/apiError";
 import { CancelOrderDialog } from "@/order/CancelOrderDialog";
 import { useCart } from "@/order/cart/CartContext";
@@ -10,6 +11,7 @@ import { IdleTimeoutDialog } from "@/order/idle-timeout/IdleTimeoutDialog";
 import { useCancelPendingOrder } from "@/order/useCancelPendingOrder";
 import { OrderSummary } from "@/payment/OrderSummary";
 import { PaymentMethodChoice } from "@/payment/PaymentMethodChoice";
+import { PaymentSupportDialog } from "@/payment/PaymentSupportDialog";
 import type {
   Payment,
   PaymentMethod,
@@ -63,8 +65,13 @@ function PaymentScreen() {
 
   const [phase, setPhase] = useState<PaymentPhase>("choosing");
   const [method, setMethod] = useState<PaymentMethod | undefined>(undefined);
+  const [failedAttempts, setFailedAttempts] = useState(0);
   const lastVariablesRef = useRef<PayOrderInput | undefined>(undefined);
   const hasResolvedMachineRef = useRef(false);
+
+  function recordFailedAttempt() {
+    setFailedAttempts((count) => count + 1);
+  }
 
   const cancelPendingOrder = useCancelPendingOrder();
 
@@ -78,6 +85,8 @@ function PaymentScreen() {
   const paymentMutation = useMutation<Payment, Error, PayOrderInput>({
     mutationKey: ["orders", "payment"],
     onSuccess: () => {
+      setFailedAttempts(0);
+
       if (!order) {
         return;
       }
@@ -89,6 +98,7 @@ function PaymentScreen() {
       if (error instanceof ApiError) {
         if (error.status === 402) {
           toast.error("Payment declined, please choose a payment method again");
+          recordFailedAttempt();
           setMethod(undefined);
           setPhase("choosing");
           return;
@@ -98,6 +108,7 @@ function PaymentScreen() {
           toast.error(
             "We couldn't reach the payment provider, please try again",
           );
+          recordFailedAttempt();
           setMethod(undefined);
           setPhase("choosing");
           return;
@@ -122,6 +133,7 @@ function PaymentScreen() {
           },
         },
       });
+      recordFailedAttempt();
       setPhase("networkError");
     },
   });
@@ -177,11 +189,12 @@ function PaymentScreen() {
   const isCancelInFlight =
     cancelPendingOrder.isPending || backToCartMutation.isPending;
   const disableBackAndCancel = phase === "processing" || isCancelInFlight;
+  const showSupportDialog = failedAttempts >= 3;
 
   return (
     <div className="flex min-h-dvh flex-col" aria-busy={phase === "processing"}>
-      <header className="fixed inset-x-0 top-0 z-40 flex items-center bg-background px-4 py-3 ring-1 ring-foreground/10">
-        <p className="font-heading text-xl font-semibold">MASHVINI</p>
+      <header className="fixed inset-x-0 top-0 z-40 flex items-center bg-header px-4 py-3 text-header-foreground ring-1 ring-foreground/10">
+        <MashviniLogo layout="horizontal" className="h-10 w-auto" />
       </header>
       <div className="flex flex-1 flex-col gap-6 px-4 pt-20 pb-24">
         <p aria-live="polite" className="text-base font-medium">
@@ -227,6 +240,10 @@ function PaymentScreen() {
       <IdleTimeoutDialog
         enabled={phase === "choosing"}
         onTimeout={() => cancelPendingOrder.cancel(currentOrder.id)}
+      />
+      <PaymentSupportDialog
+        open={showSupportDialog}
+        onClose={() => setFailedAttempts(0)}
       />
     </div>
   );

@@ -12,7 +12,7 @@ describe("Header", () => {
       </CartProvider>,
     );
 
-    expect(screen.getByText("MASHVINI")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Mashvini" })).toBeInTheDocument();
     expect(screen.getByText(/0 items/)).toBeInTheDocument();
     expect(screen.getByText(/\$0\.00/)).toBeInTheDocument();
   });
@@ -24,10 +24,9 @@ describe("Header", () => {
       </CartProvider>,
     );
 
-    expect(screen.getByText("MASHVINI").closest("header")).toHaveClass(
-      "fixed",
-      "top-0",
-    );
+    expect(
+      screen.getByRole("img", { name: "Mashvini" }).closest("header"),
+    ).toHaveClass("fixed", "top-0");
   });
 
   it("calls onToggleCart when the cart button is clicked", async () => {

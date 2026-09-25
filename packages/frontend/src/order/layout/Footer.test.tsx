@@ -71,7 +71,7 @@ function renderOrderView(opts: {
 async function addItemToCart(name: string) {
   const user = userEvent.setup();
   const card = screen.getByText(name).closest("article") as HTMLElement;
-  await user.click(within(card).getByText("Add"));
+  await user.click(within(card).getByText("Add to Cart"));
 }
 
 async function openCartFromFooter() {

@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router";
+import { MashviniLogo } from "@/brand/MashviniLogo";
 import { useCountdown } from "@/order/useCountdown";
 import { Button } from "@/ui/button";
 
@@ -14,6 +15,7 @@ function SuccessScreen() {
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-8 p-8 text-center">
+      <MashviniLogo className="w-56 text-header" />
       <div className="flex flex-col gap-2">
         <h1 className="font-heading text-3xl font-semibold">
           Thank you for buying at MashVini

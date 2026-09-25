@@ -1,0 +1,11 @@
+<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+  <title>Mashvini</title>
+  <g transform="translate(80, 15)">
+    <path stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M 32 45 L 50 45 L 68 112 C 70 118 75 122 82 122 L 152 122 C 158 122 163 118 165 112 L 178 62 L 52 62"></path>
+    <path stroke="currentColor" stroke-width="6" stroke-linecap="round" fill="none" d="M 72 134 L 155 134"></path>
+    <circle cx="82" cy="154" r="9" fill="currentColor"></circle>
+    <circle cx="145" cy="154" r="9" fill="currentColor"></circle>
+    <path fill="currentColor" d="M 112 68 C 122 68 129 78 127 92 C 125 105 116 114 112 117 C 108 114 99 105 97 92 C 95 78 102 68 112 68 Z"></path>
+  </g>
+  <text x="180" y="228" text-anchor="middle" font-family="'Cinzel', 'Playfair Display', Georgia, serif" font-size="34" font-weight="800" letter-spacing="7" fill="currentColor">MASHVINI</text>
+</svg>

@@ -60,7 +60,7 @@ function CatalogCard({ item }: CatalogCardProps) {
                   type="button"
                   onClick={() => dispatch({ type: "add", item })}
                 >
-                  Add
+                  Add to Cart
                 </Button>
               ))}
           </div>

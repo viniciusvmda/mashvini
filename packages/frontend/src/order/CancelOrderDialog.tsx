@@ -41,7 +41,7 @@ function CancelOrderDialog({
         render={
           <Button
             type="button"
-            variant="outline"
+            variant="destructive"
             className="h-12 px-6 text-base"
             disabled={disabled}
           />
@@ -49,16 +49,25 @@ function CancelOrderDialog({
       >
         Cancel order
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="gap-5 p-6 data-[size=default]:max-w-md data-[size=default]:sm:max-w-lg">
         <AlertDialogHeader>
-          <AlertDialogTitle>Cancel this order?</AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogTitle className="text-2xl font-semibold">
+            Cancel this order?
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-lg">
             Your cart will be cleared and you will return to the start screen.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Keep shopping</AlertDialogCancel>
-          <AlertDialogAction type="button" onClick={handleConfirm}>
+          <AlertDialogCancel className="h-12 px-6 text-base">
+            Keep shopping
+          </AlertDialogCancel>
+          <AlertDialogAction
+            type="button"
+            variant="destructive"
+            className="h-12 px-6 text-base"
+            onClick={handleConfirm}
+          >
             Cancel order
           </AlertDialogAction>
         </AlertDialogFooter>
