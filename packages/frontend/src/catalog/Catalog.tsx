@@ -36,11 +36,10 @@ function Catalog() {
   }, [isError, error]);
 
   return (
-    <div className="flex flex-col gap-6 p-4">
-      <header className="flex flex-col items-center gap-1 text-center">
-        <h1 className="font-heading text-2xl font-semibold">MashVini</h1>
-        <p className="text-muted-foreground">Select the items in the catalog</p>
-      </header>
+    <div className="flex flex-1 flex-col gap-6">
+      <p className="text-center text-lg text-muted-foreground">
+        Select the items in the catalog
+      </p>
 
       {isPending ? (
         <CatalogSkeleton />
