@@ -99,3 +99,7 @@ Against real Postgres, same setup as the [order task](03-build-order.md). Each c
 - Cancel: `pending`, twice (stock restored only once) and `paid`.
 - Races: two payments with different keys, and a payment against a cancel, on the same order. Exactly one wins and stock matches the winner.
 - Sweep: only `pending` orders past `expires_at` expire.
+
+## Changes from the original design
+
+- Minor adjustments like addind delay after selecting the payment method to visualize the transitions and add a countdown for the auto-approve.

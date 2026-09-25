@@ -23,24 +23,9 @@ src/
 |   |-- HealthStatus.tsx      # renders Healthy/Unhealthy based on GET /health
 |   `-- HealthStatus.test.tsx
 |-- order/
-|   |-- cart/               # cart state (CartContext/cartReducer/cartSelectors/CartPanel)
-|   |-- idle/                # IdleScreen (start screen)
-|   |-- idle-timeout/         # useIdleTimeout/IdleTimeoutDialog (90s + 10s countdown)
-|   |-- layout/               # Header/Footer for the catalog screen
-|   |-- success/              # SuccessScreen shown after a payment is approved
-|   |-- createOrder.ts        # POST /orders
-|   |-- cancelOrder.ts        # POST /orders/{id}/cancel
-|   |-- useFinalizeOrder.ts     # creates the order and navigates to /payment
-|   |-- useCancelPendingOrder.ts # cancels the pending order, clears the cart, and returns home
-|   |-- CancelOrderDialog.tsx   # confirm dialog reused by the catalog and payment screens
-|   `-- OrderScreen.tsx        # /catalog route
+|   `-- ...
 |-- payment/
-|   |-- payOrder.ts          # POST /orders/{id}/payment, Payment/PaymentMethod/SimulatedOutcome types
-|   |-- usePaymentMachine.ts   # 5s simulated payment machine timer
-|   |-- PaymentScreen.tsx     # /payment route: method choice, machine step, payment result handling
-|   |-- OrderSummary.tsx      # order lines and total
-|   |-- PaymentMethodChoice.tsx # Card/Mobile wallet buttons
-|   `-- SimulatedMachinePanel.tsx # dev-only Approve/Decline/Gateway error panel
+|   `-- ...
 |-- test/
 |   |-- renderWithClient.tsx   # renders a component with QueryClient/Router/Toaster
 |   `-- setup.ts           # jest-dom matchers and IntersectionObserver stub for Vitest
@@ -67,8 +52,7 @@ src/
 ## Environment variables
 
 Copy `.env.example` to `.env` and set `VITE_API_URL` to the backend base URL
-(e.g. `http://localhost:8000`). `VITE_PAYMENT_SIMULATOR` toggles the dev-only simulated
-payment machine panel (Approve/Decline/Gateway error) on the payment screen.
+(e.g. `http://localhost:8000`). `VITE_PAYMENT_SIMULATOR` toggles the dev-only simulated payment machine panel (Approve/Decline/Gateway error) on the payment screen.
 
 ## Commands
 
