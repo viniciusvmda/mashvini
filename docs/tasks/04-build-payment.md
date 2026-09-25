@@ -102,4 +102,4 @@ Against real Postgres, same setup as the [order task](03-build-order.md). Each c
 
 ## Changes from the original design
 
-- Minor adjustments like addind delay after selecting the payment method to visualize the transitions and add a countdown for the auto-approve.
+- Minor adjustments like adding a delay after selecting the payment method to visualize the transitions and add a countdown for the auto-approve.
