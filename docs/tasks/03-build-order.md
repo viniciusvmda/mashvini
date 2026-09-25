@@ -124,3 +124,9 @@ against a disposable Postgres database (dedicated test database on the dev Postg
     - Item exists but requested quantity exceeds stock: 409,
     - Order with multiple lines where only one item fails: whole request rolls back
     - Concurrent orders for the last unit of stock: fire two requests for the same item (stock = 1, each requesting 1) at the same time. Exactly one succeeds (stock ends at 0, one order persisted). The other gets the not-available error. Stock never goes negative.
+
+## Changes from the original design
+
+- Adjustments to improve readability in backend: Merge loop in `order/repository.py``
+- Style adjustments: `Card height mismatch when out of stock`, Finalize/Cancel buttons too small for tablet
+- Cart behaviour: initially it was always opened. Now it works like a SideBar, that was my original idea and allow users to add new items with the cart opened.

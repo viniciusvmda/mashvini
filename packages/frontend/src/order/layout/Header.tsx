@@ -26,11 +26,11 @@ function Header({ isCartOpen, onToggleCart }: HeaderProps) {
         <Button
           type="button"
           variant="outline"
-          size="icon"
-          aria-label="Toggle cart"
+          className="h-12 gap-2 px-4 text-base"
           onClick={onToggleCart}
         >
-          <ShoppingCart />
+          <ShoppingCart className="size-5" />
+          {isCartOpen ? "Close Cart" : "Open Cart"}
         </Button>
       </div>
     </header>

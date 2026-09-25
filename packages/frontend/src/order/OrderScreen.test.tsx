@@ -54,7 +54,7 @@ describe("OrderScreen", () => {
     renderWithClient(<OrderScreen />, { queryFn });
     await screen.findByText("Voss water");
 
-    await user.click(screen.getByLabelText("Toggle cart"));
+    await user.click(screen.getByRole("button", { name: /Cart/ }));
 
     expect(screen.getByLabelText("Cart")).toBeInTheDocument();
   });
@@ -76,7 +76,7 @@ describe("OrderScreen", () => {
     renderWithClient(<OrderScreen />, { queryFn });
     await screen.findByText("Voss water");
 
-    await user.click(screen.getByLabelText("Toggle cart"));
+    await user.click(screen.getByRole("button", { name: /Cart/ }));
 
     const header = screen
       .getByText("MASHVINI")
@@ -93,7 +93,7 @@ describe("OrderScreen", () => {
     await screen.findByText("Voss water");
     await screen.findByText("Sparkling water");
 
-    await user.click(screen.getByLabelText("Toggle cart"));
+    await user.click(screen.getByRole("button", { name: /Cart/ }));
     const cart = screen.getByLabelText("Cart");
     await user.click(screen.getAllByText("Add")[0]);
     await user.click(screen.getAllByText("Add")[0]);
