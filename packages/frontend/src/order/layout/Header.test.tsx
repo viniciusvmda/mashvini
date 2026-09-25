@@ -8,7 +8,7 @@ describe("Header", () => {
   it("renders the app name, item count, and total", () => {
     render(
       <CartProvider>
-        <Header onToggleCart={() => {}} />
+        <Header isCartOpen={false} onToggleCart={() => {}} />
       </CartProvider>,
     );
 
@@ -20,7 +20,7 @@ describe("Header", () => {
   it("is fixed to the top of the viewport", () => {
     render(
       <CartProvider>
-        <Header onToggleCart={() => {}} />
+        <Header isCartOpen={false} onToggleCart={() => {}} />
       </CartProvider>,
     );
 
@@ -35,12 +35,22 @@ describe("Header", () => {
     const user = userEvent.setup();
     render(
       <CartProvider>
-        <Header onToggleCart={onToggleCart} />
+        <Header isCartOpen={false} onToggleCart={onToggleCart} />
       </CartProvider>,
     );
 
     await user.click(screen.getByLabelText("Toggle cart"));
 
     expect(onToggleCart).toHaveBeenCalledOnce();
+  });
+
+  it("hides the item count and total while the cart panel is open", () => {
+    render(
+      <CartProvider>
+        <Header isCartOpen={true} onToggleCart={() => {}} />
+      </CartProvider>,
+    );
+
+    expect(screen.queryByText(/items/)).not.toBeInTheDocument();
   });
 });

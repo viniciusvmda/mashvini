@@ -22,5 +22,7 @@ paths: ["packages/backend/**"]
 - Endpoint tests cover invalid/out-of-range query and path parameters (e.g. a negative page, a
   size of 0, a size above the declared maximum), not just valid-input cases, whenever a route
   declares `Query`/`Path` constraints (`ge`, `le`, etc.).
+- `logger.*` calls use `%`-style lazy args (`logger.info("Order %d created", order.id)`),
+  never an f-string or `.format()`, so the message isn't built when the log level is disabled.
 
 See `packages/backend/README.md` for folder structure, technologies, and commands.

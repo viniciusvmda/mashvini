@@ -24,7 +24,15 @@ function CancelOrderDialog() {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger render={<Button type="button" variant="outline" />}>
+      <AlertDialogTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            className="h-12 px-6 text-base"
+          />
+        }
+      >
         Cancel order
       </AlertDialogTrigger>
       <AlertDialogContent>

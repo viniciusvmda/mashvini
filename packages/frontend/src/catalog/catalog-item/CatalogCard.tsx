@@ -31,35 +31,37 @@ function CatalogCard({ item }: CatalogCardProps) {
           ) : (
             <StockBadge />
           )}
-          {isInStock &&
-            (line ? (
-              <QuantityStepper
-                itemName={item.name}
-                quantity={line.quantity}
-                max={item.stock}
-                onIncrement={() =>
-                  dispatch({
-                    type: "setQuantity",
-                    itemId: item.id,
-                    quantity: line.quantity + 1,
-                  })
-                }
-                onDecrement={() =>
-                  dispatch({
-                    type: "setQuantity",
-                    itemId: item.id,
-                    quantity: line.quantity - 1,
-                  })
-                }
-              />
-            ) : (
-              <Button
-                type="button"
-                onClick={() => dispatch({ type: "add", item })}
-              >
-                Add
-              </Button>
-            ))}
+          <div className="h-7">
+            {isInStock &&
+              (line ? (
+                <QuantityStepper
+                  itemName={item.name}
+                  quantity={line.quantity}
+                  max={item.stock}
+                  onIncrement={() =>
+                    dispatch({
+                      type: "setQuantity",
+                      itemId: item.id,
+                      quantity: line.quantity + 1,
+                    })
+                  }
+                  onDecrement={() =>
+                    dispatch({
+                      type: "setQuantity",
+                      itemId: item.id,
+                      quantity: line.quantity - 1,
+                    })
+                  }
+                />
+              ) : (
+                <Button
+                  type="button"
+                  onClick={() => dispatch({ type: "add", item })}
+                >
+                  Add
+                </Button>
+              ))}
+          </div>
         </CardContent>
       </Card>
     </article>

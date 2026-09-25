@@ -30,18 +30,7 @@ class OrderRepository:
                 .with_for_update()
             )
             items = {item.id: item for item in self._session.execute(statement).scalars().all()}
-
-            for item_id in quantities:
-                if item_id not in items:
-                    raise ItemNotFoundError(item_id)
-
-            unavailable = [
-                (items[item_id].name, items[item_id].stock)
-                for item_id, quantity in quantities.items()
-                if items[item_id].stock < quantity
-            ]
-            if unavailable:
-                raise ItemNotAvailableError(unavailable)
+            self._check_availability(items, quantities)
 
             for item_id, quantity in quantities.items():
                 items[item_id].stock -= quantity
@@ -60,6 +49,18 @@ class OrderRepository:
             self._session.flush()
 
         return order
+
+    def _check_availability(self, items: dict[int, Item], quantities: Counter[int]) -> None:
+        unavailable = []
+        for item_id, quantity in quantities.items():
+            item = items.get(item_id)
+            if item is None:
+                raise ItemNotFoundError(item_id)
+            if item.stock < quantity:
+                unavailable.append((item.name, item.stock))
+
+        if unavailable:
+            raise ItemNotAvailableError(unavailable)
 
 
 def get_order_repository(session: Annotated[Session, Depends(get_session)]) -> OrderRepository:

@@ -15,7 +15,12 @@ function Footer() {
   return (
     <footer className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-end gap-3 bg-background px-4 py-3 ring-1 ring-foreground/10">
       <CancelOrderDialog />
-      <Button type="button" onClick={finalize} disabled={isPending}>
+      <Button
+        type="button"
+        className="h-12 px-6 text-base"
+        onClick={finalize}
+        disabled={isPending}
+      >
         Finalize order
       </Button>
     </footer>

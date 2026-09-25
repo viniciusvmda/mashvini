@@ -26,13 +26,13 @@ function renderPanel() {
   return render(
     <CartProvider>
       <AddItemButton />
-      <CartPanel />
+      <CartPanel open={true} onOpenChange={() => {}} />
     </CartProvider>,
   );
 }
 
 describe("CartPanel", () => {
-  it("renders as a labeled aside with an empty-cart message", () => {
+  it("renders as a labeled panel with an empty-cart message", () => {
     renderPanel();
 
     expect(screen.getByLabelText("Cart")).toBeInTheDocument();
@@ -71,5 +71,15 @@ describe("CartPanel", () => {
     await user.click(screen.getByLabelText("Decrease quantity of Voss water"));
 
     expect(screen.getByText("Your cart is empty")).toBeInTheDocument();
+  });
+
+  it("does not render when closed", () => {
+    render(
+      <CartProvider>
+        <CartPanel open={false} onOpenChange={() => {}} />
+      </CartProvider>,
+    );
+
+    expect(screen.queryByLabelText("Cart")).not.toBeInTheDocument();
   });
 });

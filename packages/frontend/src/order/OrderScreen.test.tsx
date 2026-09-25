@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import type { CatalogPage } from "@/catalog/catalogItem";
@@ -61,5 +61,21 @@ describe("OrderScreen", () => {
     await user.click(screen.getByText("Add"));
 
     expect(screen.getByLabelText("Cart")).toBeInTheDocument();
+  });
+
+  it("hides the header's item count while the cart panel is open", async () => {
+    const user = userEvent.setup();
+    const queryFn = vi.fn(() => Promise.resolve(buildPage()));
+    renderWithClient(<OrderScreen />, { queryFn });
+    await screen.findByText("Voss water");
+
+    await user.click(screen.getByText("Add"));
+
+    const header = screen
+      .getByText("MASHVINI")
+      .closest("header") as HTMLElement;
+    expect(
+      within(header).queryByText(/items? · Total/),
+    ).not.toBeInTheDocument();
   });
 });
