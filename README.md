@@ -43,6 +43,30 @@ The payment simulator panel is on by default in Docker Compose, so every edge ca
 - **Last unit, two kiosks:** open two browser tabs, put the last units of an item in both carts,
   and finalize both. The second one gets a toast and keeps the rest of its cart.
 
+## Stack
+
+- Frontend: React, TypeScript, Vite, TanStack Query, React Router, Tailwind CSS, Biome. See [`docs/decisions/01-frontend.md`](docs/decisions/01-frontend.md).
+- Backend: Python, FastAPI, SQLAlchemy, Alembic, uv, ruff, mypy. See [`docs/decisions/02-backend.md`](docs/decisions/02-backend.md).
+- Database: PostgreSQL. See [`docs/decisions/03-data-persistence.md`](docs/decisions/03-data-persistence.md).
+- Tooling: Docker Compose for local orchestration, GitHub Actions for CI. See [`docs/decisions/04-folder-structure.md`](docs/decisions/04-folder-structure.md).
+
+## Folder structure
+
+```console
+.
+|-- .github/               
+|   |-- workflows/         # PR checks workflow  
+|-- .claude/               # Claude Code rules and post-edit hooks
+|-- docs/                  # decisions, requirements, task descriptions
+|-- medias/                # images used by the items rendered with Github raw content endpoint
+|-- packages/
+|   |-- backend/           # FastAPI checkout API, see packages/backend/README.md
+|   `-- frontend/          # React checkout app, see packages/frontend/README.md
+|-- compose.yaml
+`-- Makefile
+```
+
+See each package's own README for its detailed folder structure, technologies, and commands.
 
 ## How it was built
 
@@ -121,29 +145,6 @@ The full list is in [`docs/decisions/`](docs/decisions/). The ones that shape th
 - **Cart surviving a page reload:** the cart is in-memory React state. A reload on a kiosk resets it, which is the same outcome as walking away ([03](docs/tasks/03-build-order.md)).
 - **End-to-end browser tests:** the flows are covered by component tests and backend integration tests against real Postgres, but nothing drives a real browser against the running stack (e.g. Playwright).
 
-## Stack
-
-- Frontend: React, TypeScript, Vite, TanStack Query, React Router, Tailwind CSS, Biome. See [`docs/decisions/01-frontend.md`](docs/decisions/01-frontend.md).
-- Backend: Python, FastAPI, SQLAlchemy, Alembic, uv, ruff, mypy. See [`docs/decisions/02-backend.md`](docs/decisions/02-backend.md).
-- Database: PostgreSQL. See [`docs/decisions/03-data-persistence.md`](docs/decisions/03-data-persistence.md).
-- Tooling: Docker Compose for local orchestration, GitHub Actions for CI. See [`docs/decisions/04-folder-structure.md`](docs/decisions/04-folder-structure.md).
-
-## Folder structure
-
-```console
-.
-|-- .github/               
-|   |-- workflows/         # PR checks workflow  
-|-- .claude/               # Claude Code rules and post-edit hooks
-|-- docs/                  # decisions, requirements, task descriptions
-|-- packages/
-|   |-- backend/           # FastAPI checkout API, see packages/backend/README.md
-|   `-- frontend/          # React checkout app, see packages/frontend/README.md
-|-- compose.yaml
-`-- Makefile
-```
-
-See each package's own README for its detailed folder structure, technologies, and commands.
 
 ## Development
 
