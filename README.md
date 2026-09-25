@@ -43,6 +43,8 @@ The payment simulator panel is on by default in Docker Compose, so every edge ca
 - **Last unit, two kiosks:** open two browser tabs, put the last units of an item in both carts,
   and finalize both. The second one gets a toast and keeps the rest of its cart.
 
+The screenshots of the live application are available in [screenshots](docs/screenshots/).
+
 ## Stack
 
 - Frontend: React, TypeScript, Vite, TanStack Query, React Router, Tailwind CSS, Biome. See [`docs/decisions/01-frontend.md`](docs/decisions/01-frontend.md).
