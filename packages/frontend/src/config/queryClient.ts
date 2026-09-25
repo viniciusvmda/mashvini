@@ -1,5 +1,7 @@
 import type { QueryFunctionContext } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
+import { createOrder } from "../order/createOrder";
+import { ApiError, extractErrorMessage } from "./apiError";
 import { env } from "./env";
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
@@ -36,39 +38,32 @@ function buildUrl(
   return { url, path };
 }
 
-async function extractErrorMessage(
-  response: Response,
-  path: string,
-): Promise<string> {
-  const fallbackMessage = `Request to ${path} failed with status ${response.status}`;
-
-  try {
-    const body = await response.json();
-    return body?.detail ?? fallbackMessage;
-  } catch {
-    return fallbackMessage;
-  }
-}
-
 async function defaultQueryFn({ queryKey, pageParam }: QueryFunctionContext) {
   const { url, path } = buildUrl(queryKey, pageParam);
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(await extractErrorMessage(response, path));
+    throw new ApiError(
+      await extractErrorMessage(response, path),
+      response.status,
+    );
   }
 
   return response.json();
 }
 
 function createQueryClient(): QueryClient {
-  return new QueryClient({
+  const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         queryFn: defaultQueryFn,
       },
     },
   });
+
+  queryClient.setMutationDefaults(["orders"], { mutationFn: createOrder });
+
+  return queryClient;
 }
 
 export { createQueryClient };
