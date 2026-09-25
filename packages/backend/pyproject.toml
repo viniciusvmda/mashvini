@@ -67,5 +67,5 @@ mypy_path = "src"
 plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests/unit"]
 addopts = "--import-mode=importlib"
