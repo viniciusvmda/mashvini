@@ -139,3 +139,5 @@ Mock database and test REST client
 
 - `shadcn/ui` is copied into a folder in the frontend. I decided to copy it to `src/ui` instead of the original path `src/components/ui`. I also had to exempt the naming convention for this folder that user kebab-case names.
 - `shadcn/ui` toasts are triggered by functions, so I discared the original plan that would build status toast components (success, error, warning) and implement global status logic. The function brings this out of the box.
+- Add more items to the database to showcase infinite scroll.
+- Fixed issue with infinite scroll that was loading all the pages when loading the next page. Fixed adding a callback to reset `inView` state before fetching next page.

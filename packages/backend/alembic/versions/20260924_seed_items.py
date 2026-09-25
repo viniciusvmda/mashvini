@@ -76,6 +76,42 @@ ITEMS = [
         "stock": 9,
         "image_url": "https://raw.githubusercontent.com/viniciusvmda/mashvini/main/medias/11-ruffles.png",
     },
+    {
+        "name": "Chita Candy",
+        "price": 0.30,
+        "stock": 25,
+        "image_url": "https://raw.githubusercontent.com/viniciusvmda/mashvini/main/medias/12-chita-candy.png",
+    },
+    {
+        "name": "Heineken",
+        "price": 8.00,
+        "stock": 6,
+        "image_url": "https://raw.githubusercontent.com/viniciusvmda/mashvini/main/medias/13-heineken.png",
+    },
+    {
+        "name": "Kit Kat",
+        "price": 1.20,
+        "stock": 14,
+        "image_url": "https://raw.githubusercontent.com/viniciusvmda/mashvini/main/medias/14-kit-kat.png",
+    },
+    {
+        "name": "Pitu",
+        "price": 12.00,
+        "stock": 3,
+        "image_url": "https://raw.githubusercontent.com/viniciusvmda/mashvini/main/medias/15-pitu.png",
+    },
+    {
+        "name": "Red Bull",
+        "price": 6.50,
+        "stock": 10,
+        "image_url": "https://raw.githubusercontent.com/viniciusvmda/mashvini/main/medias/16-red-bull.png",
+    },
+    {
+        "name": "Sonho de Valsa",
+        "price": 1.00,
+        "stock": 0,
+        "image_url": "https://raw.githubusercontent.com/viniciusvmda/mashvini/main/medias/17-sonho-de-valsa.png",
+    },
 ]
 
 items = sa.table(

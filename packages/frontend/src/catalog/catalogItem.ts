@@ -13,7 +13,7 @@ type CatalogPage = {
   data: CatalogItem[];
 };
 
-const CATALOG_PAGE_SIZE = 12;
+const CATALOG_PAGE_SIZE = 8;
 
 export type { CatalogItem, CatalogPage };
 export { CATALOG_PAGE_SIZE };

@@ -18,7 +18,11 @@ function useInView<T extends Element>() {
     observerRef.current.observe(node);
   }, []);
 
-  return { ref, isInView };
+  const resetInView = useCallback(() => {
+    setIsInView(false);
+  }, []);
+
+  return { ref, isInView, resetInView };
 }
 
 export { useInView };

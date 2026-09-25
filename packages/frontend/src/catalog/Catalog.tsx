@@ -16,13 +16,18 @@ function Catalog() {
     isFetchingNextPage,
     fetchNextPage,
   } = useCatalogItems();
-  const { ref: sentinelRef, isInView } = useInView<HTMLDivElement>();
+  const {
+    ref: sentinelRef,
+    isInView,
+    resetInView,
+  } = useInView<HTMLDivElement>();
 
   useEffect(() => {
     if (isInView && hasNextPage && !isFetchingNextPage) {
+      resetInView();
       fetchNextPage();
     }
-  }, [isInView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [isInView, hasNextPage, isFetchingNextPage, fetchNextPage, resetInView]);
 
   useEffect(() => {
     if (isError) {

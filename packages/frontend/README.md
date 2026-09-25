@@ -11,19 +11,14 @@ src/
 |   |-- catalog-item/
 |   |   |-- CatalogCard.tsx      # card with image, name, and price/stock badge
 |   |   |-- CatalogCard.test.tsx
-|   |   |-- StockBadge.tsx       # generic "not available in stock" badge
-|   |   `-- StockBadge.test.tsx
+|   |   |-- ...
 |   |-- catalogItem.ts        # CatalogItem/CatalogPage types, CATALOG_PAGE_SIZE
 |   |-- Catalog.tsx           # renders the catalog grid via GET /items
 |   |-- Catalog.test.tsx
-|   |-- CatalogSkeleton.tsx      # loading-state grid of skeleton cards
-|   |-- CatalogSkeleton.test.tsx
-|   |-- useCatalogItems.ts    # useInfiniteQuery wrapper keyed by page/size
-|   `-- useInView.ts          # IntersectionObserver hook for scroll pagination
+|   `-- ...
 |-- config/
 |   |-- env.ts            # typed environment variables (VITE_API_URL)
-|   |-- queryClient.ts     # QueryClient factory with the default API-fetching queryFn
-|   `-- queryClient.test.ts
+|   `-- ...
 |-- health/
 |   |-- HealthStatus.tsx      # renders Healthy/Unhealthy based on GET /health
 |   `-- HealthStatus.test.tsx
@@ -32,14 +27,10 @@ src/
 |   `-- setup.ts           # jest-dom matchers and IntersectionObserver stub for Vitest
 |-- ui/
 |   |-- badge.tsx            # vendored shadcn/ui primitives (kebab-case)
-|   |-- card.tsx
-|   |-- skeleton.tsx
-|   |-- sonner.tsx
-|   `-- utils.ts
+|   `-- ...
 |-- App.tsx
 |-- main.tsx
 |-- index.css
-`-- vite-env.d.ts
 ```
 
 ## Main technologies
