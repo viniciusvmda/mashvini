@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import { MashviniLogo } from "@/brand/MashviniLogo";
 import { useCart } from "@/order/cart/CartContext";
 import { Button } from "@/ui/button";
 
@@ -13,7 +14,7 @@ function IdleScreen() {
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-8 p-8 text-center">
-      <p className="font-heading text-2xl font-semibold">MASHVINI</p>
+      <MashviniLogo className="w-72 text-header" />
       <Button
         type="button"
         size="lg"

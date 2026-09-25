@@ -35,16 +35,16 @@ describe("CatalogCard", () => {
 
     expect(screen.getByText("Not available in stock")).toBeInTheDocument();
     expect(screen.queryByText(/\$/)).not.toBeInTheDocument();
-    expect(screen.queryByText("Add")).not.toBeInTheDocument();
+    expect(screen.queryByText("Add to Cart")).not.toBeInTheDocument();
   });
 
   it("swaps the Add button for a quantity stepper once the item is added", async () => {
     const user = userEvent.setup();
     renderCard(<CatalogCard item={buildItem()} />);
 
-    await user.click(screen.getByText("Add"));
+    await user.click(screen.getByText("Add to Cart"));
 
-    expect(screen.queryByText("Add")).not.toBeInTheDocument();
+    expect(screen.queryByText("Add to Cart")).not.toBeInTheDocument();
     expect(
       screen.getByLabelText("Increase quantity of Voss water"),
     ).toBeInTheDocument();
@@ -55,17 +55,17 @@ describe("CatalogCard", () => {
     const user = userEvent.setup();
     renderCard(<CatalogCard item={buildItem()} />);
 
-    await user.click(screen.getByText("Add"));
+    await user.click(screen.getByText("Add to Cart"));
     await user.click(screen.getByLabelText("Decrease quantity of Voss water"));
 
-    expect(screen.getByText("Add")).toBeInTheDocument();
+    expect(screen.getByText("Add to Cart")).toBeInTheDocument();
   });
 
   it("disables the increase button once the stock limit is reached", async () => {
     const user = userEvent.setup();
     renderCard(<CatalogCard item={buildItem({ stock: 1 })} />);
 
-    await user.click(screen.getByText("Add"));
+    await user.click(screen.getByText("Add to Cart"));
 
     expect(
       screen.getByLabelText("Increase quantity of Voss water"),

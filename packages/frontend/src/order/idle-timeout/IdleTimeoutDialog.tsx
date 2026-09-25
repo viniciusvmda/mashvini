@@ -57,15 +57,21 @@ function IdleTimeoutDialog({
         }
       }}
     >
-      <AlertDialogContent>
+      <AlertDialogContent className="gap-5 p-6 data-[size=default]:max-w-md data-[size=default]:sm:max-w-lg">
         <AlertDialogHeader>
-          <AlertDialogTitle>Still there?</AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogTitle className="text-2xl font-semibold">
+            Still there?
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-lg">
             {isIdle && <IdleCountdownMessage onZero={handleTimeoutReached} />}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction type="button" onClick={reset}>
+          <AlertDialogAction
+            type="button"
+            className="h-12 px-6 text-base"
+            onClick={reset}
+          >
             I'm still here
           </AlertDialogAction>
         </AlertDialogFooter>

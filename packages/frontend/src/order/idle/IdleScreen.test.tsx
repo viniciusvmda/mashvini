@@ -16,6 +16,12 @@ function renderIdleScreen() {
 }
 
 describe("IdleScreen", () => {
+  it("renders the Mashvini logo", () => {
+    renderIdleScreen();
+
+    expect(screen.getByRole("img", { name: "Mashvini" })).toBeInTheDocument();
+  });
+
   it("renders the start prompt", () => {
     renderIdleScreen();
 

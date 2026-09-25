@@ -34,7 +34,7 @@ describe("OrderScreen", () => {
     const queryFn = vi.fn(() => Promise.resolve(buildPage()));
     renderWithClient(<OrderScreen />, { queryFn });
 
-    expect(screen.getByText("MASHVINI")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Mashvini" })).toBeInTheDocument();
     const item = await screen.findByText("Voss water");
     const grid = item.closest("article")?.parentElement;
     expect(grid).toHaveClass("grid-cols-2");
@@ -54,7 +54,7 @@ describe("OrderScreen", () => {
     renderWithClient(<OrderScreen />, { queryFn });
     await screen.findByText("Voss water");
 
-    await user.click(screen.getByRole("button", { name: /Cart/ }));
+    await user.click(screen.getByRole("button", { name: "Open Cart" }));
 
     expect(screen.getByLabelText("Cart")).toBeInTheDocument();
   });
@@ -65,7 +65,7 @@ describe("OrderScreen", () => {
     renderWithClient(<OrderScreen />, { queryFn });
     await screen.findByText("Voss water");
 
-    await user.click(screen.getAllByText("Add")[0]);
+    await user.click(screen.getAllByText("Add to Cart")[0]);
 
     expect(screen.queryByLabelText("Cart")).not.toBeInTheDocument();
   });
@@ -76,10 +76,10 @@ describe("OrderScreen", () => {
     renderWithClient(<OrderScreen />, { queryFn });
     await screen.findByText("Voss water");
 
-    await user.click(screen.getByRole("button", { name: /Cart/ }));
+    await user.click(screen.getByRole("button", { name: "Open Cart" }));
 
     const header = screen
-      .getByText("MASHVINI")
+      .getByRole("img", { name: "Mashvini" })
       .closest("header") as HTMLElement;
     expect(
       within(header).queryByText(/items? · Total/),
@@ -92,8 +92,8 @@ describe("OrderScreen", () => {
     renderWithClient(<OrderScreen />, { queryFn });
     await screen.findByText("Voss water");
 
-    await user.click(screen.getAllByText("Add")[0]);
-    await user.click(screen.getByRole("button", { name: /Cart/ }));
+    await user.click(screen.getAllByText("Add to Cart")[0]);
+    await user.click(screen.getByRole("button", { name: "Open Cart" }));
 
     const footer = screen
       .getByRole("button", { name: "Finalize order" })
@@ -113,10 +113,10 @@ describe("OrderScreen", () => {
     await screen.findByText("Voss water");
     await screen.findByText("Sparkling water");
 
-    await user.click(screen.getByRole("button", { name: /Cart/ }));
+    await user.click(screen.getByRole("button", { name: "Open Cart" }));
     const cart = screen.getByLabelText("Cart");
-    await user.click(screen.getAllByText("Add")[0]);
-    await user.click(screen.getAllByText("Add")[0]);
+    await user.click(screen.getAllByText("Add to Cart")[0]);
+    await user.click(screen.getAllByText("Add to Cart")[0]);
 
     expect(within(cart).getByText("Voss water")).toBeInTheDocument();
     expect(within(cart).getByText("Sparkling water")).toBeInTheDocument();

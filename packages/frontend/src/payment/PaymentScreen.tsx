@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "sonner";
+import { MashviniLogo } from "@/brand/MashviniLogo";
 import { ApiError } from "@/config/apiError";
 import { CancelOrderDialog } from "@/order/CancelOrderDialog";
 import { useCart } from "@/order/cart/CartContext";
@@ -180,8 +181,8 @@ function PaymentScreen() {
 
   return (
     <div className="flex min-h-dvh flex-col" aria-busy={phase === "processing"}>
-      <header className="fixed inset-x-0 top-0 z-40 flex items-center bg-background px-4 py-3 ring-1 ring-foreground/10">
-        <p className="font-heading text-xl font-semibold">MASHVINI</p>
+      <header className="fixed inset-x-0 top-0 z-40 flex items-center bg-header px-4 py-3 text-header-foreground ring-1 ring-foreground/10">
+        <MashviniLogo layout="horizontal" className="h-10 w-auto" />
       </header>
       <div className="flex flex-1 flex-col gap-6 px-4 pt-20 pb-24">
         <p aria-live="polite" className="text-base font-medium">

@@ -43,9 +43,10 @@ describe("SuccessScreen", () => {
     vi.useRealTimers();
   });
 
-  it("renders the thank-you message and the initial countdown", () => {
+  it("renders the Mashvini logo, thank-you message, and the initial countdown", () => {
     renderSuccessScreen();
 
+    expect(screen.getByRole("img", { name: "Mashvini" })).toBeInTheDocument();
     expect(
       screen.getByText("Thank you for buying at MashVini"),
     ).toBeInTheDocument();
