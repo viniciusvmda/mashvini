@@ -19,7 +19,7 @@ describe("queryClient", () => {
   it("builds the url from string path segments", async () => {
     const queryClient = createQueryClient();
 
-    await queryClient.fetchQuery({ queryKey: ["health"], retry: false });
+    await queryClient.query({ queryKey: ["health"], retry: false });
 
     expect(fetch).toHaveBeenCalledWith(
       `${import.meta.env.VITE_API_URL}/health`,
@@ -29,7 +29,7 @@ describe("queryClient", () => {
   it("builds query string params from a trailing object segment and pageParam", async () => {
     const queryClient = createQueryClient();
 
-    await queryClient.fetchInfiniteQuery({
+    await queryClient.infiniteQuery({
       queryKey: ["items", { size: 12 }],
       initialPageParam: 1,
       getNextPageParam: () => undefined,
@@ -53,7 +53,7 @@ describe("queryClient", () => {
     const queryClient = createQueryClient();
 
     await expect(
-      queryClient.fetchQuery({ queryKey: ["items"], retry: false }),
+      queryClient.query({ queryKey: ["items"], retry: false }),
     ).rejects.toThrow("Failed to retrieve items");
   });
 
@@ -69,7 +69,7 @@ describe("queryClient", () => {
     const queryClient = createQueryClient();
 
     await expect(
-      queryClient.fetchQuery({ queryKey: ["items"], retry: false }),
+      queryClient.query({ queryKey: ["items"], retry: false }),
     ).rejects.toThrow("Request to items failed with status 500");
   });
 });

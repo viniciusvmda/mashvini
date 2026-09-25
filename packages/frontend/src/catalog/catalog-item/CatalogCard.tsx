@@ -1,11 +1,7 @@
 import { Card, CardContent } from "@/ui/card";
 import type { CatalogItem } from "../catalogItem";
+import { formatPrice } from "../currency";
 import { StockBadge } from "./StockBadge";
-
-const priceFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
 
 type CatalogCardProps = {
   item: CatalogItem;
@@ -26,9 +22,7 @@ function CatalogCard({ item }: CatalogCardProps) {
         <CardContent className="flex flex-col gap-1">
           <p className="text-base font-medium">{item.name}</p>
           {isInStock ? (
-            <p className="text-lg font-semibold">
-              {priceFormatter.format(item.price)}
-            </p>
+            <p className="text-lg font-semibold">{formatPrice(item.price)}</p>
           ) : (
             <StockBadge />
           )}

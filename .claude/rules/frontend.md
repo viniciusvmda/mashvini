@@ -32,5 +32,13 @@ paths: ["packages/frontend/**"]
   inherit those sizes for primary content: set an explicit size (`text-base` or larger for
   body text, `text-lg`+ for emphasized values like prices) on the element that renders it,
   rather than relying on the primitive's default.
+- TanStack Query deprecates its imperative `QueryClient` methods over time in favor of a
+  smaller set of replacements (e.g. `fetchQuery`/`ensureQueryData` → `query`,
+  `fetchInfiniteQuery`/`ensureInfiniteQueryData` → `infiniteQuery`). Don't call a method
+  flagged `@deprecated` in its type signature; use the replacement it points to instead.
+- Extract a pure formatting/calculation function used by a component (e.g. currency, date
+  formatting) into its own colocated sibling module with a dedicated test, instead of defining
+  it inline in the component file. Keep it in the same feature folder unless a second feature
+  needs it too.
 
 See `packages/frontend/README.md` for folder structure, technologies, and commands.

@@ -19,5 +19,8 @@ paths: ["packages/backend/**"]
 - 4-space indentation for Python code.
 - Out schemas that load ORM entities set `model_config = ConfigDict(from_attributes=True)` and
   are built with `model_validate`.
+- Endpoint tests cover invalid/out-of-range query and path parameters (e.g. a negative page, a
+  size of 0, a size above the declared maximum), not just valid-input cases, whenever a route
+  declares `Query`/`Path` constraints (`ge`, `le`, etc.).
 
 See `packages/backend/README.md` for folder structure, technologies, and commands.

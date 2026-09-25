@@ -108,3 +108,27 @@ def test_repository_error_returns_500() -> None:
 
     assert response.status_code == 500
     assert response.json() == {"detail": "Failed to retrieve items"}
+
+
+def test_negative_page_returns_422() -> None:
+    client = _client(FakeItemRepository([]))
+
+    response = client.get("/items", params={"page": -1, "size": 12})
+
+    assert response.status_code == 422
+
+
+def test_size_zero_returns_422() -> None:
+    client = _client(FakeItemRepository([]))
+
+    response = client.get("/items", params={"page": 0, "size": 0})
+
+    assert response.status_code == 422
+
+
+def test_size_above_maximum_returns_422() -> None:
+    client = _client(FakeItemRepository([]))
+
+    response = client.get("/items", params={"page": 0, "size": 101})
+
+    assert response.status_code == 422
