@@ -11,7 +11,7 @@ describe("SimulatedMachinePanel", () => {
   it("renders nothing when the payment simulator env var is off", () => {
     vi.stubEnv("VITE_PAYMENT_SIMULATOR", "false");
 
-    render(<SimulatedMachinePanel onOutcome={vi.fn()} />);
+    render(<SimulatedMachinePanel onOutcome={vi.fn()} remainingSeconds={5} />);
 
     expect(screen.queryByText("SIMULATOR")).not.toBeInTheDocument();
   });
@@ -19,16 +19,26 @@ describe("SimulatedMachinePanel", () => {
   it("renders the simulator panel when the env var is on", () => {
     vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
 
-    render(<SimulatedMachinePanel onOutcome={vi.fn()} />);
+    render(<SimulatedMachinePanel onOutcome={vi.fn()} remainingSeconds={5} />);
 
     expect(screen.getByText("SIMULATOR")).toBeInTheDocument();
+  });
+
+  it("shows a countdown to the auto-approval", () => {
+    vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
+
+    render(<SimulatedMachinePanel onOutcome={vi.fn()} remainingSeconds={3} />);
+
+    expect(screen.getByText("Auto-approving in 3s")).toBeInTheDocument();
   });
 
   it("calls onOutcome with approved when Approve is clicked", async () => {
     vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
     const onOutcome = vi.fn();
     const user = userEvent.setup();
-    render(<SimulatedMachinePanel onOutcome={onOutcome} />);
+    render(
+      <SimulatedMachinePanel onOutcome={onOutcome} remainingSeconds={5} />,
+    );
 
     await user.click(
       screen.getByRole("button", { name: "Simulate an approved payment" }),
@@ -41,7 +51,9 @@ describe("SimulatedMachinePanel", () => {
     vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
     const onOutcome = vi.fn();
     const user = userEvent.setup();
-    render(<SimulatedMachinePanel onOutcome={onOutcome} />);
+    render(
+      <SimulatedMachinePanel onOutcome={onOutcome} remainingSeconds={5} />,
+    );
 
     await user.click(
       screen.getByRole("button", { name: "Simulate a declined payment" }),
@@ -54,7 +66,9 @@ describe("SimulatedMachinePanel", () => {
     vi.stubEnv("VITE_PAYMENT_SIMULATOR", "true");
     const onOutcome = vi.fn();
     const user = userEvent.setup();
-    render(<SimulatedMachinePanel onOutcome={onOutcome} />);
+    render(
+      <SimulatedMachinePanel onOutcome={onOutcome} remainingSeconds={5} />,
+    );
 
     await user.click(
       screen.getByRole("button", { name: "Simulate a gateway error" }),

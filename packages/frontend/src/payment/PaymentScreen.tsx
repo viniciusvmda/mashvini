@@ -27,14 +27,17 @@ type MachineStepProps = {
 };
 
 function MachineStep({ onResolve }: MachineStepProps) {
-  const { resolveNow } = usePaymentMachine(onResolve);
+  const { resolveNow, remaining } = usePaymentMachine(onResolve);
 
   return (
     <div className="flex flex-col gap-4 rounded-md border border-foreground/10 p-4">
       <p className="text-lg font-medium">
         Finish the payment on the payment machine
       </p>
-      <SimulatedMachinePanel onOutcome={resolveNow} />
+      <SimulatedMachinePanel
+        onOutcome={resolveNow}
+        remainingSeconds={remaining}
+      />
     </div>
   );
 }

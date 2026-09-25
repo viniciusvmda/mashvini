@@ -23,6 +23,18 @@ describe("usePaymentMachine", () => {
     expect(onResolve).toHaveBeenCalledWith(undefined);
   });
 
+  it("starts at 5 seconds remaining and counts down by one every second", () => {
+    const { result } = renderHook(() => usePaymentMachine(vi.fn()));
+
+    expect(result.current.remaining).toBe(5);
+
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+
+    expect(result.current.remaining).toBe(4);
+  });
+
   it("resolves immediately with the given outcome when resolveNow is called", () => {
     const onResolve = vi.fn();
     const { result } = renderHook(() => usePaymentMachine(onResolve));

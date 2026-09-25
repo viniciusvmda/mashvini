@@ -4,18 +4,27 @@ import { Button } from "@/ui/button";
 
 type SimulatedMachinePanelProps = {
   onOutcome: (outcome: SimulatedOutcome) => void;
+  remainingSeconds: number;
 };
 
-function SimulatedMachinePanel({ onOutcome }: SimulatedMachinePanelProps) {
+function SimulatedMachinePanel({
+  onOutcome,
+  remainingSeconds,
+}: SimulatedMachinePanelProps) {
   if (!isPaymentSimulatorEnabled()) {
     return null;
   }
 
   return (
     <div className="flex flex-col gap-3 rounded-md border-2 border-dashed border-destructive/50 p-4">
-      <p className="text-sm font-semibold tracking-wide text-destructive">
-        SIMULATOR
-      </p>
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-sm font-semibold tracking-wide text-destructive">
+          SIMULATOR
+        </p>
+        <p aria-live="polite" className="text-sm text-destructive">
+          Auto-approving in {remainingSeconds}s
+        </p>
+      </div>
       <div className="flex flex-wrap gap-3">
         <Button
           type="button"

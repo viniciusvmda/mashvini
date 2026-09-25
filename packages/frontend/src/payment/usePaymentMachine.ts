@@ -1,29 +1,35 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
+import { useCountdown } from "@/order/useCountdown";
 import type { SimulatedOutcome } from "@/payment/payOrder";
 
-const MACHINE_WAIT_MS = 5000;
+const MACHINE_WAIT_SECONDS = 5;
 
 function usePaymentMachine(onResolve: (outcome?: SimulatedOutcome) => void) {
   const onResolveRef = useRef(onResolve);
-  const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined,
-  );
+  const hasResolvedRef = useRef(false);
   onResolveRef.current = onResolve;
 
-  useEffect(() => {
-    timeoutIdRef.current = setTimeout(() => {
-      onResolveRef.current(undefined);
-    }, MACHINE_WAIT_MS);
+  const handleTimeout = useCallback(() => {
+    if (hasResolvedRef.current) {
+      return;
+    }
 
-    return () => clearTimeout(timeoutIdRef.current);
+    hasResolvedRef.current = true;
+    onResolveRef.current(undefined);
   }, []);
 
+  const { remaining } = useCountdown(MACHINE_WAIT_SECONDS, handleTimeout);
+
   function resolveNow(outcome?: SimulatedOutcome) {
-    clearTimeout(timeoutIdRef.current);
+    if (hasResolvedRef.current) {
+      return;
+    }
+
+    hasResolvedRef.current = true;
     onResolveRef.current(outcome);
   }
 
-  return { resolveNow };
+  return { resolveNow, remaining };
 }
 
 export { usePaymentMachine };
