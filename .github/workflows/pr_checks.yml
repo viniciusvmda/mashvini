@@ -22,6 +22,42 @@ jobs:
       - run: uv run mypy
       - run: uv run pytest
 
+  backend-integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18.1-alpine
+        env:
+          POSTGRES_USER: mashvini
+          POSTGRES_PASSWORD: mashvini
+          POSTGRES_DB: mashvini
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U mashvini -d mashvini"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 5432
+      DATABASE_USER: mashvini
+      DATABASE_PASSWORD: mashvini
+      DATABASE_NAME: mashvini
+      CORS_ALLOWED_ORIGINS: '["http://localhost:5173"]'
+    defaults:
+      run:
+        working-directory: packages/backend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.13"
+      - run: cp .env.example .env
+      - run: uv sync --frozen
+      - run: uv run alembic upgrade head
+      - run: uv run pytest tests/integration
+
   frontend:
     runs-on: ubuntu-latest
     defaults:
