@@ -24,5 +24,9 @@ paths: ["packages/backend/**"]
   declares `Query`/`Path` constraints (`ge`, `le`, etc.).
 - `logger.*` calls use `%`-style lazy args (`logger.info("Order %d created", order.id)`),
   never an f-string or `.format()`, so the message isn't built when the log level is disabled.
+- No native database enums: columns with a fixed set of values (statuses, methods, types) are
+  `String` columns in models and migrations. The allowed values live in a Python `StrEnum`
+  used by the API schemas, so validation happens at the API boundary. See
+  `docs/decisions/07-payment.md`.
 
 See `packages/backend/README.md` for folder structure, technologies, and commands.
