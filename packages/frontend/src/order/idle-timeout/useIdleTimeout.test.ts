@@ -51,6 +51,27 @@ describe("useIdleTimeout", () => {
     expect(result.current.isIdle).toBe(true);
   });
 
+  it("never becomes idle when disabled", () => {
+    const { result } = renderHook(() => useIdleTimeout(90_000, false));
+
+    act(() => {
+      vi.advanceTimersByTime(90_000);
+    });
+
+    expect(result.current.isIdle).toBe(false);
+  });
+
+  it("does not attach listeners when disabled", () => {
+    const { result } = renderHook(() => useIdleTimeout(90_000, false));
+
+    act(() => {
+      window.dispatchEvent(new Event("pointerdown"));
+      vi.advanceTimersByTime(90_000);
+    });
+
+    expect(result.current.isIdle).toBe(false);
+  });
+
   it("exposes a reset function that clears the idle state", () => {
     const { result } = renderHook(() => useIdleTimeout(90_000));
 

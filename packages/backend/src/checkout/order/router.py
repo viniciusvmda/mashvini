@@ -4,7 +4,11 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from checkout.catalog.exceptions import ItemNotFoundError
-from checkout.order.exceptions import ItemNotAvailableError
+from checkout.order.exceptions import (
+    ItemNotAvailableError,
+    OrderNotFoundError,
+    OrderNotPayableError,
+)
 from checkout.order.repository import OrderRepository, get_order_repository
 from checkout.order.schemas import OrderIn, OrderOut
 
@@ -28,5 +32,24 @@ def create_order(
         logger.info("Order creation failed: item(s) not available")
         raise
     logger.info("Order %d created", order.id)
+
+    return OrderOut.model_validate(order)
+
+
+@router.post("/orders/{order_id}/cancel")
+def cancel_order(
+    order_id: int,
+    repository: Annotated[OrderRepository, Depends(get_order_repository)],
+) -> OrderOut:
+    logger.info("Cancelling order %d", order_id)
+    try:
+        order = repository.cancel(order_id)
+    except OrderNotFoundError:
+        logger.info("Cancel failed: order %d not found", order_id)
+        raise
+    except OrderNotPayableError:
+        logger.info("Cancel failed: order %d is not payable", order_id)
+        raise
+    logger.info("Order %d cancelled (status=%s)", order_id, order.status)
 
     return OrderOut.model_validate(order)

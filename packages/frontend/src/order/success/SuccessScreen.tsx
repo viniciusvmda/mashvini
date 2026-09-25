@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useCountdown } from "@/order/useCountdown";
 import { Button } from "@/ui/button";
 
@@ -6,6 +6,8 @@ const RETURN_COUNTDOWN_SECONDS = 10;
 
 function SuccessScreen() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const orderId = (location.state as { orderId?: number } | null)?.orderId;
   const { remaining } = useCountdown(RETURN_COUNTDOWN_SECONDS, () =>
     navigate("/"),
   );
@@ -16,6 +18,9 @@ function SuccessScreen() {
         <h1 className="font-heading text-3xl font-semibold">
           Thank you for buying at MashVini
         </h1>
+        {orderId !== undefined && (
+          <p className="text-lg font-medium">Order #{orderId}</p>
+        )}
         <p className="text-lg text-muted-foreground">
           Looking forward to see you again
         </p>

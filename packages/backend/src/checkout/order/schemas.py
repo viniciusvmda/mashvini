@@ -1,6 +1,14 @@
 from datetime import datetime
+from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict, Field, PositiveInt
+
+
+class OrderStatus(StrEnum):
+    PENDING = "pending"
+    PAID = "paid"
+    CANCELLED = "cancelled"
+    EXPIRED = "expired"
 
 
 class OrderLineIn(BaseModel):
@@ -25,4 +33,7 @@ class OrderOut(BaseModel):
 
     id: int
     created_at: datetime
+    status: OrderStatus
+    expires_at: datetime
+    total: float
     lines: list[OrderLineOut]

@@ -1,16 +1,36 @@
 import { act, fireEvent, screen } from "@testing-library/react";
-import { Route, Routes } from "react-router";
+import { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { renderWithClient } from "@/test/renderWithClient";
 import { SuccessScreen } from "./SuccessScreen";
 
-function renderSuccessScreen() {
+function NavigateToSuccess({ orderId }: { orderId: number }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/success", { replace: true, state: { orderId } });
+  }, [navigate, orderId]);
+
+  return null;
+}
+
+function renderSuccessScreen(orderId?: number) {
   return renderWithClient(
     <Routes>
       <Route path="/" element={<p>Idle screen</p>} />
       <Route path="/success" element={<SuccessScreen />} />
+      {orderId !== undefined && (
+        <Route
+          path="/start"
+          element={<NavigateToSuccess orderId={orderId} />}
+        />
+      )}
     </Routes>,
-    { queryFn: () => Promise.resolve({}), initialEntries: ["/success"] },
+    {
+      queryFn: () => Promise.resolve({}),
+      initialEntries: [orderId !== undefined ? "/start" : "/success"],
+    },
   );
 }
 
@@ -42,6 +62,18 @@ describe("SuccessScreen", () => {
     });
 
     expect(screen.getByText("Idle screen")).toBeInTheDocument();
+  });
+
+  it("shows the order number when it is passed via router state", () => {
+    renderSuccessScreen(42);
+
+    expect(screen.getByText("Order #42")).toBeInTheDocument();
+  });
+
+  it("does not crash and shows no order number without router state", () => {
+    renderSuccessScreen();
+
+    expect(screen.queryByText(/Order #/)).not.toBeInTheDocument();
   });
 
   it("navigates to the idle screen immediately when Start new shop is clicked", () => {

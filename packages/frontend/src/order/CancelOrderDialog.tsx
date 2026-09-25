@@ -13,11 +13,24 @@ import {
 } from "@/ui/alert-dialog";
 import { Button } from "@/ui/button";
 
-function CancelOrderDialog() {
+type CancelOrderDialogProps = {
+  onConfirm?: () => void;
+  disabled?: boolean;
+};
+
+function CancelOrderDialog({
+  onConfirm,
+  disabled = false,
+}: CancelOrderDialogProps = {}) {
   const { dispatch } = useCart();
   const navigate = useNavigate();
 
   function handleConfirm() {
+    if (onConfirm) {
+      onConfirm();
+      return;
+    }
+
     dispatch({ type: "clear" });
     navigate("/");
   }
@@ -30,6 +43,7 @@ function CancelOrderDialog() {
             type="button"
             variant="outline"
             className="h-12 px-6 text-base"
+            disabled={disabled}
           />
         }
       >

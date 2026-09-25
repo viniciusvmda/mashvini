@@ -35,12 +35,16 @@ def test_create_order_persists_order_lines_and_decrements_stock(
 
     assert response.status_code == 201
     body = response.json()
+    assert body["status"] == "pending"
+    assert body["expires_at"] is not None
     assert body["lines"] == [
         {"item_id": item_a.id, "quantity": 2, "price": 2.5},
         {"item_id": item_b.id, "quantity": 1, "price": 3.0},
     ]
 
     order = db_session.execute(select(Order).where(Order.id == body["id"])).scalar_one()
+    assert order.status == "pending"
+    assert order.expires_at is not None
     lines = (
         db_session.execute(
             select(OrderLine).where(OrderLine.order_id == order.id).order_by(OrderLine.item_id)

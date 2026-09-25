@@ -1,6 +1,7 @@
 import type { MutationFunction, QueryFunction } from "@tanstack/react-query";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { Route, Routes } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import { Catalog } from "@/catalog/Catalog";
@@ -8,6 +9,14 @@ import type { CatalogPage } from "@/catalog/catalogItem";
 import { ApiError } from "@/config/apiError";
 import { renderWithClient } from "@/test/renderWithClient";
 import { Footer } from "./Footer";
+
+function FooterHarness() {
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  return (
+    <Footer isCartOpen={isCartOpen} onOpenCart={() => setIsCartOpen(true)} />
+  );
+}
 
 function buildPage(stockByItemId: Record<number, number>): CatalogPage {
   return {
@@ -44,13 +53,18 @@ function renderOrderView(opts: {
         element={
           <>
             <Catalog />
-            <Footer />
+            <FooterHarness />
           </>
         }
       />
-      <Route path="/success" element={<p>Success screen</p>} />
+      <Route path="/payment" element={<p>Payment screen</p>} />
     </Routes>,
-    { ...opts, initialEntries: ["/catalog"] },
+    {
+      queryFn: opts.queryFn,
+      mutationKey: ["orders", "create"],
+      mutationFn: opts.mutationFn,
+      initialEntries: ["/catalog"],
+    },
   );
 }
 
@@ -60,6 +74,11 @@ async function addItemToCart(name: string) {
   await user.click(within(card).getByText("Add"));
 }
 
+async function openCartFromFooter() {
+  const user = userEvent.setup();
+  await user.click(await screen.findByText("Review order"));
+}
+
 describe("Footer", () => {
   it("is hidden when the cart is empty", async () => {
     const queryFn = vi.fn(() => Promise.resolve(buildPage({ 1: 5, 2: 5 })));
@@ -67,35 +86,73 @@ describe("Footer", () => {
 
     await screen.findByText("Voss water");
 
+    expect(screen.queryByText("Review order")).not.toBeInTheDocument();
     expect(screen.queryByText("Finalize order")).not.toBeInTheDocument();
   });
 
-  it("appears once an item is added and stays fixed to the bottom", async () => {
+  it("shows Review order once an item is added while the cart is closed, and stays fixed to the bottom", async () => {
     const queryFn = vi.fn(() => Promise.resolve(buildPage({ 1: 5, 2: 5 })));
     renderOrderView({ queryFn });
     await screen.findByText("Voss water");
 
     await addItemToCart("Voss water");
 
-    const finalizeButton = await screen.findByText("Finalize order");
-    expect(finalizeButton.closest("footer")).toHaveClass("fixed", "bottom-0");
+    const reviewButton = await screen.findByText("Review order");
+    expect(reviewButton.closest("footer")).toHaveClass("fixed", "bottom-0");
   });
 
-  it("clears the cart and navigates to the success screen on a successful finalize", async () => {
+  it("switches from Review order to Finalize order once the cart is opened", async () => {
+    const queryFn = vi.fn(() => Promise.resolve(buildPage({ 1: 5, 2: 5 })));
+    renderOrderView({ queryFn });
+    await screen.findByText("Voss water");
+    await addItemToCart("Voss water");
+
+    await openCartFromFooter();
+
+    expect(screen.queryByText("Review order")).not.toBeInTheDocument();
+    expect(screen.getByText("Finalize order")).toBeInTheDocument();
+  });
+
+  it("gives Review order and Finalize order the same width", async () => {
+    const queryFn = vi.fn(() => Promise.resolve(buildPage({ 1: 5, 2: 5 })));
+    renderOrderView({ queryFn });
+    await screen.findByText("Voss water");
+    await addItemToCart("Voss water");
+
+    const extractWidthClass = (element: HTMLElement) =>
+      element.className.match(/\bw-\S+/)?.[0];
+    const reviewWidthClass = extractWidthClass(
+      screen.getByText("Review order"),
+    );
+
+    await openCartFromFooter();
+
+    const finalizeWidthClass = extractWidthClass(
+      screen.getByText("Finalize order"),
+    );
+    expect(finalizeWidthClass).toBe(reviewWidthClass);
+    expect(finalizeWidthClass).toBeDefined();
+  });
+
+  it("navigates to the payment screen and keeps the cart on a successful finalize", async () => {
     const user = userEvent.setup();
     const queryFn = vi.fn(() => Promise.resolve(buildPage({ 1: 5, 2: 5 })));
     const mutationFn = vi.fn().mockResolvedValue({
       id: 1,
       created_at: "2026-09-24T00:00:00Z",
+      status: "pending",
+      expires_at: "2026-09-24T00:05:00Z",
+      total: 9,
       lines: [{ item_id: 1, quantity: 1, price: 9 }],
     });
     renderOrderView({ queryFn, mutationFn });
     await screen.findByText("Voss water");
     await addItemToCart("Voss water");
+    await openCartFromFooter();
 
     await user.click(await screen.findByText("Finalize order"));
 
-    expect(await screen.findByText("Success screen")).toBeInTheDocument();
+    expect(await screen.findByText("Payment screen")).toBeInTheDocument();
   });
 
   it("toasts, refreshes stock, and preserves the rest of the cart on a 409 conflict", async () => {
@@ -111,6 +168,7 @@ describe("Footer", () => {
     await screen.findByText("Voss water");
     await addItemToCart("Voss water");
     await addItemToCart("Halls");
+    await openCartFromFooter();
 
     await user.click(await screen.findByText("Finalize order"));
 
@@ -128,6 +186,7 @@ describe("Footer", () => {
     renderOrderView({ queryFn, mutationFn });
     await screen.findByText("Voss water");
     await addItemToCart("Voss water");
+    await openCartFromFooter();
 
     await user.click(await screen.findByText("Finalize order"));
 

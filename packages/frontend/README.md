@@ -22,6 +22,10 @@ src/
 |-- health/
 |   |-- HealthStatus.tsx      # renders Healthy/Unhealthy based on GET /health
 |   `-- HealthStatus.test.tsx
+|-- order/
+|   `-- ...
+|-- payment/
+|   `-- ...
 |-- test/
 |   |-- renderWithClient.tsx   # renders a component with QueryClient/Router/Toaster
 |   `-- setup.ts           # jest-dom matchers and IntersectionObserver stub for Vitest
@@ -48,7 +52,7 @@ src/
 ## Environment variables
 
 Copy `.env.example` to `.env` and set `VITE_API_URL` to the backend base URL
-(e.g. `http://localhost:8000`).
+(e.g. `http://localhost:8000`). `VITE_PAYMENT_SIMULATOR` toggles the dev-only simulated payment machine panel (Approve/Decline/Gateway error) on the payment screen.
 
 ## Commands
 
