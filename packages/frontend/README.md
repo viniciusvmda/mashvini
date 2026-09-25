@@ -7,18 +7,30 @@ components and colocated tests, instead of being grouped by technical layer.
 
 ```console
 src/
+|-- catalog/
+|   |-- catalog-item/
+|   |   |-- CatalogCard.tsx      # card with image, name, and price/stock badge
+|   |   |-- CatalogCard.test.tsx
+|   |   |-- ...
+|   |-- catalogItem.ts        # CatalogItem/CatalogPage types, CATALOG_PAGE_SIZE
+|   |-- Catalog.tsx           # renders the catalog grid via GET /items
+|   |-- Catalog.test.tsx
+|   `-- ...
 |-- config/
 |   |-- env.ts            # typed environment variables (VITE_API_URL)
-|   `-- queryClient.ts     # QueryClient factory with the default API-fetching queryFn
+|   `-- ...
 |-- health/
 |   |-- HealthStatus.tsx      # renders Healthy/Unhealthy based on GET /health
 |   `-- HealthStatus.test.tsx
 |-- test/
-|   `-- setup.ts           # jest-dom matchers for Vitest
+|   |-- renderWithClient.tsx   # renders a component with QueryClient/Router/Toaster
+|   `-- setup.ts           # jest-dom matchers and IntersectionObserver stub for Vitest
+|-- ui/
+|   |-- badge.tsx            # vendored shadcn/ui primitives (kebab-case)
+|   `-- ...
 |-- App.tsx
 |-- main.tsx
 |-- index.css
-`-- vite-env.d.ts
 ```
 
 ## Main technologies
@@ -28,6 +40,8 @@ src/
 - TanStack Query for server state and API calls
 - React Router for client-side routing
 - Tailwind CSS for styling
+- shadcn/ui for accessible, unstyled-by-default component primitives (vendored under `src/ui/`)
+- Sonner for status toasts
 - Biome for linting and formatting
 - Vitest and React Testing Library for tests
 
